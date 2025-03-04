@@ -6,41 +6,41 @@ export const MyPreset = definePreset(Aura, {
       colorScheme: {
           light: {
               primary: {
-                  50: '{pink.50}',
-                  100: '{pink.100}',
-                  200: '{pink.200}',
-                  300: '{pink.300}',
-                  400: '{pink.400}',
-                  500: '{pink.500}',
-                  600: '{pink.600}',
-                  700: '{pink.700}',
-                  800: '{pink.800}',
-                  900: '{pink.900}',
-                  950: '{pink.950}'
+                  50: '{teal.50}',
+                  100: '{teal.100}',
+                  200: '{teal.200}',
+                  300: '{teal.300}',
+                  400: '{teal.400}',
+                  500: '{teal.500}',
+                  600: '{teal.600}',
+                  700: '{teal.700}',
+                  800: '{teal.800}',
+                  900: '{teal.900}',
+                  950: '{teal.950}'
               },
               highlight: {
-                background: '{pink.700}',
-                focusBackground: '{pink.700}',
+                background: '{teal.700}',
+                focusBackground: '{teal.700}',
                 color: '#ffffff'
               }
           },
           dark: {
             primary: {
-              50: '{pink.50}',
-              100: '{pink.100}',
-              200: '{pink.200}',
-              300: '{pink.300}',
-              400: '{pink.400}',
-              500: '{pink.500}',
-              600: '{pink.600}',
-              700: '{pink.700}',
-              800: '{pink.800}',
-              900: '{pink.900}',
-              950: '{pink.950}'
+              50: '{teal.50}',
+              100: '{teal.100}',
+              200: '{teal.200}',
+              300: '{teal.300}',
+              400: '{teal.400}',
+              500: '{teal.500}',
+              600: '{teal.600}',
+              700: '{teal.700}',
+              800: '{teal.800}',
+              900: '{teal.900}',
+              950: '{teal.950}'
           },
           highlight: {
-            background: '{pink.700}',
-            focusBackground: '{pink.700}',
+            background: '{teal.700}',
+            focusBackground: '{teal.700}',
             color: '#ffffff'
             }
           }

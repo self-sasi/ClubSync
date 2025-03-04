@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MegaMenuItem } from 'primeng/api';
 import { MegaMenu } from 'primeng/megamenu';
 import { ButtonModule } from 'primeng/button';
@@ -14,7 +14,16 @@ import { AvatarModule } from 'primeng/avatar';
 export class NavbarComponent implements OnInit {
   items: MegaMenuItem[] | undefined;
 
+  sidebarVisible : boolean = true;
+  @Output() sidebarVisibility : EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  toggleSidebar() : void {
+    this.sidebarVisible = !this.sidebarVisible;
+    this.sidebarVisibility.emit(this.sidebarVisible);
+  }
+
   ngOnInit() {
+
       this.items = [
           {
               label: 'Company',

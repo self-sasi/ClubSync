@@ -1,0 +1,36 @@
+<div class="grid surface-overlay border-1 surface-border border-round-right-xl overflow-hidden justify-content-center px-2 h-screen min-h-screen border-left-none">
+
+  <div class="col-10 text-center text-5xl pt-4">
+    CLUBSYNC
+  </div>
+
+  <p-divider />
+
+
+  <div class="grid justify-content-center row-gap-1">
+    <div class="col-10">
+      <p-button label="Browse" icon="pi pi-search" styleClass="w-full" severity="info"/>
+    </div>
+    <div class="col-10">
+      <p-button label="Register" icon="pi pi-plus" styleClass="w-full" severity="success"/>
+    </div>
+  </div>
+
+
+  <p-divider />
+
+  <div class="grid justify-content-center row-gap-1">
+    @for (club of clubList; track $index) {
+      <div class="col-10">
+        <p-button label="{{club.name}}" variant="outlined" styleClass="w-full"/>
+      </div>
+    }
+  </div>
+
+  <p-divider />
+
+  <div class="col-10">
+    <p-button label="Log Out" icon="pi pi-sign-out" styleClass="w-full" severity="danger"/>
+  </div>
+
+</div>
