@@ -1,22 +1,18 @@
 import express from 'express';
-import { pool } from './config/database.js'
+import bodyParser from 'body-parser';
+import authRouter from './routers/authRouter.js'; 
+import { pool } from './config/database.js';
 
 const app = express();
 const PORT: number = 3000;
 
-app.get('/', (req, res) => {
-    res.json({ message : "hello how are you" });
-});
+app.use(bodyParser.json());
 
-app.get('/users', async (req, res) => {
-    try {
-        const [data] = await pool.query("SELECT * FROM users");
-        res.json(data);
-    }
-    catch {
-        res.status(500).json({ message : "db query failed" })
-    }
-})
+app.use('/api/auth', authRouter);
+
+app.get('/', (req, res) => {
+    res.json({ message: "server is running" });
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
