@@ -1,9 +1,9 @@
-import { getAllUniversity } from "../services/universityService.js";
+import { fetchAllUniversities } from "../services/universityService.js";
 import { Request, Response } from 'express';
 
 export async function getUniversities(req: Request, res: Response) {
     try {
-        const universities = await getAllUniversity();
+        const universities = await fetchAllUniversities();
         res.status(200).json({ message: "Query Successful", universities });
     }
     catch (err: any) {
