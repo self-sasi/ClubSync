@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import authRouter from './routers/authRouter.js'; 
 import uniRouter from './routers/uniRouter.js'
+import profileRouter from './routers/profileRouter.js';
 
 const app = express();
 const PORT: number = 3000;
@@ -10,6 +11,7 @@ app.use(bodyParser.json());
 
 app.use('/api/auth', authRouter);
 app.use('/api/uni', uniRouter);
+app.use('/api/profile', profileRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: "server is running" });
