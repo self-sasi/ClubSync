@@ -25,4 +25,9 @@ export async function fetchClubMembers(clubId : number) {
     }
 }
 
+export async function fetchClubEvents(clubId : number) {
+    const [events] = await pool.query("SELECT * FROM EVENT WHERE EVENT.ClubId = ?;", clubId);
+    return events;
+}
+
 

@@ -100,6 +100,9 @@ Fetches all clubs for a given university.
     CreationDate: string; // ISO date string
     UniversityId: number;
 }
+```
+
+---
 
 ### GET `/api/clubs/user/:userId`
 Fetches all clubs for a given user.
@@ -120,6 +123,8 @@ Fetches all clubs for a given user.
 }
 ```
 
+---
+
 ### GET `/api/clubs/club/:clubId`
 Fetches a club for a user.
 
@@ -138,6 +143,7 @@ club object:
     UniversityId: number;
 }
 ```
+---
 
 ### GET `/api/clubs/club/:clubId/members`
 gets all members of the given club
@@ -153,4 +159,28 @@ an object that has normal members array and admin array
     normal : [...]
     admin : [...]
 }
+```
+---
+
+### GET `/api/clubs/club/:clubId/events`
+gets all events of the given club
+
+#### URL Parameter:
+- `clubid`: ID of the Club
+
+#### Response:
+an array of event objects
+
+```ts
+[
+    {
+        "EventId": 2,
+        "ClubId": 2,
+        "Name": "Music Concert",
+        "EventDate": "2025-05-01T06:00:00.000Z",
+        "Location": "Harvard Hall",
+        "Status": "Scheduled"
+    }
+    ...
+]
 ```
