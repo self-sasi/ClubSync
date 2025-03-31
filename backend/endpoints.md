@@ -83,7 +83,7 @@ Retrieves a user profile by userId.
 
 ## Clubs
 
-### GET `/api/clubs/:universityId`
+### GET `/api/clubs/university/:universityId`
 Fetches all clubs for a given university.
 
 #### URL Parameter:
@@ -100,5 +100,41 @@ Fetches all clubs for a given university.
     CreationDate: string; // ISO date string
     UniversityId: number;
 }
+
+### GET `/api/clubs/user/:userId`
+Fetches all clubs for a given user.
+
+#### URL Parameter:
+- `userId`: ID of the user
+
+#### Response:
+- Array of club objects:
+
+```ts
+{
+    ClubId: number;
+    ClubName: string;
+    Description: string;
+    CreationDate: string; // ISO date string
+    UniversityId: number;
+}
 ```
 
+### GET `/api/clubs/user/club/:clubId`
+Fetches a club for a user.
+
+#### URL Parameter:
+- `clubid`: ID of the Club
+
+#### Response:
+club object:
+
+```ts
+{
+    ClubId: number;
+    ClubName: string;
+    Description: string;
+    CreationDate: string; // ISO date string
+    UniversityId: number;
+}
+```
