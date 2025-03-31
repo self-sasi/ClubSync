@@ -120,7 +120,7 @@ Fetches all clubs for a given user.
 }
 ```
 
-### GET `/api/clubs/user/club/:clubId`
+### GET `/api/clubs/club/:clubId`
 Fetches a club for a user.
 
 #### URL Parameter:
@@ -136,5 +136,21 @@ club object:
     Description: string;
     CreationDate: string; // ISO date string
     UniversityId: number;
+}
+```
+
+### GET `/api/clubs/club/:clubId/members`
+gets all members of the given club
+
+#### URL Parameter:
+- `clubid`: ID of the Club
+
+#### Response:
+an object that has normal members array and admin array
+
+```ts
+{
+    normal : [...]
+    admin : [...]
 }
 ```
