@@ -2,43 +2,79 @@
   <div class="border-1 surface-border bg-black-alpha-70 border-round py-7 px-4 md:px-7 z-1">
 
       <div class="mb-4">
-          <div class="text-900 text-xl font-bold mb-2">{{signup ? 'Sign Up' : 'Log in'}}</div>
+          <div class="text-900 text-xl font-bold mb-3">{{signup ? 'Sign Up' : 'Log in'}}</div>
           <span class="text-600 font-medium">Please enter your details</span>
       </div>
 
       @if (signup) {
-        <div class="flex flex-column">
+        <div class="flex flex-column gap-5">
 
-          <span class="p-input-icon-left w-full mb-4">
-            <p-floatlabel variant="on">
-              <input pInputText id="email" [(ngModel)]="email" autocomplete="off" class="w-full md:w-25rem" type="email"/>
+          <!-- First Name -->
+          <span class="p-input-icon-left w-full ">
+            <p-floatlabel>
+              <input pInputText id="firstName" [(ngModel)]="firstName" class="w-full md:w-25rem" autocomplete="off" />
+              <label for="firstName">First Name</label>
+            </p-floatlabel>
+          </span>
+
+          <!-- Last Name -->
+          <span class="p-input-icon-left w-full ">
+            <p-floatlabel>
+              <input pInputText id="lastName" [(ngModel)]="lastName" class="w-full md:w-25rem" autocomplete="off" />
+              <label for="lastName">Last Name</label>
+            </p-floatlabel>
+          </span>
+
+          <!-- Email -->
+          <span class="p-input-icon-left w-full ">
+            <p-floatlabel>
+              <input pInputText id="email" [(ngModel)]="email" class="w-full md:w-25rem" type="email" autocomplete="off" />
               <label for="email">Email</label>
             </p-floatlabel>
           </span>
 
-          <span class="p-input-icon-left w-full mb-4">
-            <p-floatlabel variant="on">
-              <input pInputText id="username" [(ngModel)]="username" autocomplete="off" class="w-full md:w-25rem"/>
-              <label for="username">Username</label>
-            </p-floatlabel>
-          </span>
-
-          <span class="p-input-icon-left w-full mb-4">
-            <p-floatlabel variant="on">
-              <input pInputText id="password" [(ngModel)]="password" autocomplete="off" class="w-full md:w-25rem" type="password"/>
+          <!-- Password -->
+          <span class="p-input-icon-left w-full ">
+            <p-floatlabel>
+              <input pInputText id="password" [(ngModel)]="password" class="w-full md:w-25rem" type="password" autocomplete="off" />
               <label for="password">Password</label>
             </p-floatlabel>
           </span>
 
-          <div class="mb-4 flex flex-wrap gap-3">
-              <div>
-                  Already have an account?
-              </div>
-              <a class="text-600 cursor-pointer hover:text-primary cursor-pointer ml-auto transition-colors transition-duration-300" (click)="switchToLogin()">Log in</a>
+          <!-- University Autocomplete with Virtual Scroll -->
+        <span class="w-full ">
+          <p-floatlabel>
+            <p-autocomplete
+              inputId="university"
+              [(ngModel)]="selectedUniversity"
+              [suggestions]="filteredUniversities"
+              [virtualScroll]="true"
+              [virtualScrollItemSize]="34"
+              [dropdown]="true"
+              optionLabel="UniversityName"
+              (completeMethod)="filterItems($event)"
+              styleClass="w-full"
+            />
+            <label for="university">University</label>
+          </p-floatlabel>
+        </span>
+
+
+          <!-- Already have an account? -->
+          <div class=" flex flex-wrap gap-2 align-items-center">
+            <span>Already have an account?</span>
+            <a class="text-primary font-medium cursor-pointer hover:underline ml-auto" (click)="switchToLogin()">Log in</a>
           </div>
 
-          <p-button label="Sign up" variant="outlined" styleClass="w-full" severity="primary" [size]="'large'" (onClick)="route()"/>
-
+          <!-- Submit Button -->
+          <p-button
+            label="Sign Up"
+            variant="outlined"
+            styleClass="w-full"
+            severity="primary"
+            [size]="'large'"
+            (onClick)="route()">
+          </p-button>
         </div>
       }
 
@@ -47,7 +83,7 @@
 
           <span class="p-input-icon-left w-full mb-4">
             <p-floatlabel variant="on">
-              <input pInputText id="username" [(ngModel)]="username" autocomplete="off" class="w-full md:w-25rem"/>
+              <input pInputText id="username" [(ngModel)]="email" autocomplete="off" class="w-full md:w-25rem"/>
               <label for="username">Username</label>
             </p-floatlabel>
           </span>

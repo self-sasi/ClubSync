@@ -4,12 +4,21 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { FloatLabel } from 'primeng/floatlabel';
 import { DividerModule } from 'primeng/divider';
+import { AutoComplete } from 'primeng/autocomplete';
 import { Router } from '@angular/router';
 import { University } from '../../models/University';
 
 @Component({
   selector: 'app-auth-form',
-  imports: [ButtonModule, InputTextModule, FormsModule, FloatLabel, DividerModule],
+  standalone: true,
+  imports: [
+    ButtonModule,
+    InputTextModule,
+    FormsModule,
+    FloatLabel,
+    DividerModule,
+    AutoComplete
+  ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.css'
 })
@@ -17,13 +26,17 @@ export class AuthFormComponent {
 
   router = inject(Router);
 
-  @Input() universities : University[] = [];
+  @Input() universities: University[] = [];
 
-  signup : boolean = false;
+  filteredUniversities: University[] = [];
 
-  email : string = '';
-  username : string = '';
-  password : string = '';
+  signup: boolean = false;
+
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
+  password: string = '';
+  selectedUniversity: University | null = null;
 
   switchToSignup() {
     this.signup = true;
@@ -34,6 +47,13 @@ export class AuthFormComponent {
   }
 
   route() {
-    this.router.navigateByUrl('/')
+    this.router.navigateByUrl('/');
+  }
+
+  filterItems(event: { query: string }) {
+    const query = event.query.toLowerCase();
+    this.filteredUniversities = this.universities.filter(u =>
+      u.UniversityName.toLowerCase().includes(query)
+    );
   }
 }
