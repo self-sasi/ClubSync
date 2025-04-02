@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/authService.js';
 import { User } from '../types/user.js';
+import { generateToken } from '../config/jwt.js';
 
 export async function signup(req: Request, res: Response) {
     const user: User = req.body;
@@ -17,7 +18,8 @@ export async function login(req: Request, res: Response) {
 
     try {
         const user = await loginUser(Email, Password);
-        res.status(200).json({ message: "Login successful", user });
+        const token = generateToken(user.UserId);
+        res.status(200).json({ token, user });
     } catch (err: any) {
         res.status(401).json({ error: err.message });
     }

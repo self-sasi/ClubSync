@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs } from '../services/clubService.js';
+import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 
 export async function getAllClubs(req: Request, res: Response) {
 
@@ -15,9 +16,9 @@ export async function getAllClubs(req: Request, res: Response) {
 
 }
 
-export async function getUserClubs(req: Request, res: Response) {
+export async function getUserClubs(req: AuthenticatedRequest, res: Response) {
 
-    const userId = parseInt(req.params.userId, 10);
+    const userId = req.user?.userId;
 
     try {
         const clubs = await fetchUserClubs(userId);

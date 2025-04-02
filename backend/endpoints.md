@@ -61,11 +61,11 @@ Fetches all universities.
 
 ## Profile
 
-### GET `/api/profile/:id`
+### GET `/api/profile`
 Retrieves a user profile by userId.
 
 #### URL Parameter:
-- `id`: UserId
+- authentication token in header
 
 #### Response:
 ```ts
@@ -104,11 +104,11 @@ Fetches all clubs for a given university.
 
 ---
 
-### GET `/api/clubs/user/:userId`
+### GET `/api/clubs`
 Fetches all clubs for a given user.
 
 #### URL Parameter:
-- `userId`: ID of the user
+- authentication token in header
 
 #### Response:
 - Array of club objects:
