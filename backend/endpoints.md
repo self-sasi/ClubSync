@@ -184,3 +184,30 @@ an array of event objects
     ...
 ]
 ```
+
+### GET `/api/clubs/club/:clubId/announcements`
+gets all announcements of the given club
+
+#### URL Parameter:
+- `clubid`: ID of the Club
+
+#### Response:
+an array of announcement objects
+
+```ts
+TODO
+```
+
+### GET `/api/clubs/club/:clubId/announcements/:announcementId`
+gets all events of the given club
+
+#### URL Parameter:
+- `clubid`: ID of the Club
+- `announcementid`: ID of the announcement
+
+#### Response:
+an array of announcement objects
+
+```ts
+TODO
+```

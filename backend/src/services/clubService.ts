@@ -30,4 +30,12 @@ export async function fetchClubEvents(clubId : number) {
     return events;
 }
 
+export async function fetchClubAnnouncements(clubId : number) {
+    const [announcements] = await pool.query("SELECT * FROM Announcement WHERE ClubId = ?;", clubId);
+    return announcements;
+}
 
+export async function fetchClubAnnouncementDiscussions(announcemendId : number) {
+    const [discussions] = await pool.query("SELECT * FROM DiscussionChannel WHERE AnnouncementId = ?;", announcemendId);
+    return discussions;
+}
