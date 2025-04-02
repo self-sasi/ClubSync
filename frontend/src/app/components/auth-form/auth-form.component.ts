@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { FloatLabel } from 'primeng/floatlabel';
 import { DividerModule } from 'primeng/divider';
 import { Router } from '@angular/router';
+import { University } from '../../models/University';
 
 @Component({
   selector: 'app-auth-form',
@@ -15,6 +16,8 @@ import { Router } from '@angular/router';
 export class AuthFormComponent {
 
   router = inject(Router);
+
+  @Input() universities : University[] = [];
 
   signup : boolean = false;
 
