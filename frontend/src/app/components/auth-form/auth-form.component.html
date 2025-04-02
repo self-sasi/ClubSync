@@ -1,3 +1,4 @@
+<p-toast />
 <div class="px-5 min-h-screen flex justify-content-center align-items-center z-2">
   <div class="border-1 surface-border bg-black-alpha-70 border-round py-7 px-4 md:px-7 z-1">
 
@@ -12,7 +13,7 @@
           <!-- First Name -->
           <span class="p-input-icon-left w-full ">
             <p-floatlabel>
-              <input pInputText id="firstName" [(ngModel)]="firstName" class="w-full md:w-25rem" autocomplete="off" />
+              <input pInputText id="firstName" [(ngModel)]="userSignup.FirstName" class="w-full md:w-25rem" autocomplete="off" />
               <label for="firstName">First Name</label>
             </p-floatlabel>
           </span>
@@ -20,7 +21,7 @@
           <!-- Last Name -->
           <span class="p-input-icon-left w-full ">
             <p-floatlabel>
-              <input pInputText id="lastName" [(ngModel)]="lastName" class="w-full md:w-25rem" autocomplete="off" />
+              <input pInputText id="lastName" [(ngModel)]="userSignup.LastName" class="w-full md:w-25rem" autocomplete="off" />
               <label for="lastName">Last Name</label>
             </p-floatlabel>
           </span>
@@ -28,7 +29,7 @@
           <!-- Email -->
           <span class="p-input-icon-left w-full ">
             <p-floatlabel>
-              <input pInputText id="email" [(ngModel)]="email" class="w-full md:w-25rem" type="email" autocomplete="off" />
+              <input pInputText id="email" [(ngModel)]="userSignup.Email" class="w-full md:w-25rem" type="email" autocomplete="off" />
               <label for="email">Email</label>
             </p-floatlabel>
           </span>
@@ -36,7 +37,7 @@
           <!-- Password -->
           <span class="p-input-icon-left w-full ">
             <p-floatlabel>
-              <input pInputText id="password" [(ngModel)]="password" class="w-full md:w-25rem" type="password" autocomplete="off" />
+              <input pInputText id="password" [(ngModel)]="userSignup.Password" class="w-full md:w-25rem" type="password" autocomplete="off" />
               <label for="password">Password</label>
             </p-floatlabel>
           </span>
@@ -73,7 +74,7 @@
             styleClass="w-full"
             severity="primary"
             [size]="'large'"
-            (onClick)="route()">
+            (onClick)="registerUser()">
           </p-button>
         </div>
       }
@@ -83,14 +84,14 @@
 
           <span class="p-input-icon-left w-full mb-4">
             <p-floatlabel variant="on">
-              <input pInputText id="username" [(ngModel)]="email" autocomplete="off" class="w-full md:w-25rem"/>
+              <input pInputText id="username" [(ngModel)]="userLogin.Email" autocomplete="off" class="w-full md:w-25rem"/>
               <label for="username">Username</label>
             </p-floatlabel>
           </span>
 
           <span class="p-input-icon-left w-full mb-4">
             <p-floatlabel variant="on">
-              <input pInputText id="password" [(ngModel)]="password" autocomplete="off" class="w-full md:w-25rem" type="password"/>
+              <input pInputText id="password" [(ngModel)]="userLogin.Password" autocomplete="off" class="w-full md:w-25rem" type="password"/>
               <label for="password">Password</label>
             </p-floatlabel>
           </span>
