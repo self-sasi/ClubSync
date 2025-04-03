@@ -96,4 +96,10 @@ export class AuthFormComponent {
       })
     }
   }
+
+  loginUser() {
+    this.authApiService.login(this.userLogin).subscribe({
+      next : () => this.router.navigateByUrl('/')
+    });
+  }
 }

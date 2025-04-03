@@ -9,6 +9,7 @@
   <div [ngClass]="{'col-10': isSidebarVisible, 'col-12': !isSidebarVisible}">
     <div class="grid p-2">
 
+  <button (click)="test()">press me</button>
       <div class="col-12">
         <app-navbar (sidebarVisibility)="toggleSidebar($event)"></app-navbar>
       </div>
