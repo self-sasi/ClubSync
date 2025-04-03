@@ -9,8 +9,7 @@ import { Router } from '@angular/router';
 import { University } from '../../models/University';
 import { AuthApiService } from '../../services/auth.api.service';
 import { UserSignup } from '../../models/user.signup';
-import { Toast } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-auth-form',
@@ -21,12 +20,10 @@ import { MessageService } from 'primeng/api';
     FormsModule,
     FloatLabel,
     DividerModule,
-    AutoComplete,
-    Toast
+    AutoComplete
   ],
   templateUrl: './auth-form.component.html',
-  styleUrl: './auth-form.component.css',
-  providers : [MessageService]
+  styleUrl: './auth-form.component.css'
 })
 export class AuthFormComponent {
 
@@ -54,7 +51,7 @@ export class AuthFormComponent {
 
   constructor(private router : Router,
               private authApiService : AuthApiService,
-              private messageService: MessageService) {}
+              private toastService : ToastService) {}
 
   switchToSignup() {
     this.signup = true;
@@ -75,10 +72,6 @@ export class AuthFormComponent {
     );
   }
 
-  showToast(severity : string, summary : string, detail : string) {
-    this.messageService.add({ severity: severity, summary: summary, detail: detail });
-  }
-
   registerUser() {
     if (this.selectedUniversity) {
       this.userSignup.UniversityId = this.selectedUniversity!.UniversityId;
@@ -86,11 +79,9 @@ export class AuthFormComponent {
         next : () => {
           this.userLogin.Email = this.userSignup.Email;
         },
-        error: (err : Error) => {
-          console.log(err);
-        },
+        error : (err : Error) => this.toastService.showToast('error', 'Error while logging you in', err.message),
         complete : () => {
-          this.showToast('success', 'User Registered!', 'Please log in to your account.');
+          this.toastService.showToast('success', 'User Registered!', 'Please log in to your account.');
           this.switchToLogin();
         }
       })
@@ -99,7 +90,8 @@ export class AuthFormComponent {
 
   loginUser() {
     this.authApiService.login(this.userLogin).subscribe({
-      next : () => this.router.navigateByUrl('/')
+      next : () => this.router.navigateByUrl('/'),
+      error : (err : Error) => this.toastService.showToast('error', 'Error while logging you in', err.message)
     });
   }
 }

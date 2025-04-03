@@ -6,6 +6,7 @@ import { routes } from './app.routes';
 import { MyPreset } from '../styles';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './middleware/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,5 +24,6 @@ export const appConfig: ApplicationConfig = {
                 //     darkModeSelector: '.my-app-dark'
                 // }
               }
-          })],
+          }),
+    MessageService],
 };
