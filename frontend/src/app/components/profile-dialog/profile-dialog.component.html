@@ -1,0 +1,42 @@
+<p-dialog header="Profile" [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" (onHide)="visibleChange.emit(false)">
+  <div class="grid row-gap-2">
+    <div class="col-4">
+      <span class="text-primary">Firstname :</span> {{user?.FirstName}}
+    </div>
+    <div class="col-4">
+      <span class="text-primary">Lastname :</span> {{user?.LastName}}
+    </div>
+    <div class="col-4">
+      <span class="text-primary">Email :</span> {{user?.Email}}
+    </div>
+    <div class="col-12">
+      <span class="text-primary">Location :</span> {{user?.Location != undefined ? user?.Location : 'Location not set'}}
+    </div>
+    <div class="col-12 px-3">
+      <p-divider />
+    </div>
+    <div class="col-12">
+      <div class="grid row-gap-3">
+        <div class="col-12 text-xl">
+          University
+        </div>
+        <div class="col-6">
+          <span class="text-primary">Name :</span> {{userUniversity?.UniversityName}}
+        </div>
+        <div class="col-6">
+          <span class="text-primary">Location :</span> {{userUniversity?.Location}}
+        </div>
+      </div>
+    </div>
+    <div class="col-12 px-3">
+      <p-divider />
+    </div>
+    <div class="col-12">
+      <div class="flex gap-3">
+        <p-button (click)="test()" label="Edit Profile" variant="outlined" severity="info" icon="pi pi-user-edit" />
+        <p-button label="Change Password" variant="outlined" severity="warn" icon="pi pi-unlock" />
+      </div>
+
+    </div>
+  </div>
+</p-dialog>

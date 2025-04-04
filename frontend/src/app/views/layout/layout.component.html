@@ -6,9 +6,11 @@
       </div>
       <div class="col-10 border-round-top-left border-white-alpha-20 border-left-3">
         <div class="grid justify-content-end pt-4 pr-4">
-            <p-button icon="pi pi-user" [rounded]="true" [outlined]="true" size="large" severity="primary"/>
+            <p-button (click)="showProfileDialog()" icon="pi pi-user" [rounded]="true" [outlined]="true" size="large" severity="primary"/>
         </div>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>
 </div>
+<app-profile-dialog [(visible)]="profileVisible" ></app-profile-dialog>

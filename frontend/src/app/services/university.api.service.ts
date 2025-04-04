@@ -6,7 +6,7 @@ import { University } from '../models/University';
 @Injectable({
   providedIn: 'root'
 })
-export class UniversityService {
+export class UniversityApiService {
 
   private _universities = new BehaviorSubject<University[]>([]);
   public universities$ = this._universities.asObservable();
