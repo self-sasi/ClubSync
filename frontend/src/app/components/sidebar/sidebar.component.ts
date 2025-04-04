@@ -1,27 +1,13 @@
-import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
+import { Component, OnInit } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [ButtonModule, DividerModule],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrls: ['./sidebar.component.css'],
+  imports : [DividerModule, ButtonModule]
 })
 export class SidebarComponent {
 
-  clubList : any[] = [
-    {
-      name : "Club-1"
-    },
-    {
-      name : "Club-2"
-    },
-    {
-      name : "Club-3"
-    },
-    {
-      name : "Club-4"
-    },
-  ]
 }

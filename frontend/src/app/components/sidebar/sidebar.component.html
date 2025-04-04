@@ -1,35 +1,26 @@
-<div class="grid surface-overlay border-1 surface-border border-round-right-xl overflow-hidden justify-content-center px-2 h-screen min-h-screen border-left-none">
-
-  <div class="col-12 text-center text-5xl pt-4">
-    <img src="logo-name.png" alt="logo" class="h-auto w-full">
-  </div>
-  <p-divider />
-
-
-  <div class="grid justify-content-center row-gap-1">
-    <div class="col-10">
-      <p-button label="Browse" icon="pi pi-search" styleClass="w-full" severity="info"/>
+<div class="flex flex-column justify-between w-full h-full text-white px-3">
+  <!-- Top logo section -->
+  <div class="w-full text-center pt-4 pb-4">
+    <div class="w-full">
+      <span class="text-6xl text-white">Club</span>
+      <span class="text-6xl text-primary">Sync</span>
     </div>
-    <div class="col-10">
-      <p-button label="Register" icon="pi pi-plus" styleClass="w-full" severity="success"/>
-    </div>
+    <p-divider />
   </div>
 
-
-  <p-divider />
-
-  <div class="grid justify-content-center row-gap-1">
-    @for (club of clubList; track $index) {
-      <div class="col-10">
-        <p-button label="{{club.name}}" variant="outlined" styleClass="w-full"/>
-      </div>
-    }
+  <!-- Middle flexible content -->
+  <div class="flex-1 overflow-y-scroll">
+    <ul>
+      <li>Home</li>
+      <li>Profile</li>
+      <li>Settings</li>
+      <!-- Add more items -->
+    </ul>
   </div>
 
-  <p-divider />
-
-  <div class="col-10">
-    <p-button label="Log Out" icon="pi pi-sign-out" styleClass="w-full" severity="danger"/>
+  <!-- Bottom fixed section -->
+  <div class="w-full pt-4 pb-4">
+    <p-divider />
+    <p-button label="Logout" variant="outlined" severity="danger" styleClass="w-full text-xl" size="large" icon="pi pi-sign-out" />
   </div>
-
 </div>
