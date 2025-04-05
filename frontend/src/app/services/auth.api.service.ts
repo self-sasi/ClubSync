@@ -33,4 +33,11 @@ export class AuthApiService {
     );
   }
 
+  validateToken(token : string) : Observable<User> {
+    return this.http.get<User>('http://localhost:3000/api/auth/validate')
+      .pipe(
+        tap(response => this._user.next(response))
+    );
+  }
+
 }
