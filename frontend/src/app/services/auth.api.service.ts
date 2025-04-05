@@ -40,4 +40,9 @@ export class AuthApiService {
     );
   }
 
+  logout() : void {
+    this._user.next(undefined);
+    this._authService.logout();
+  }
+
 }
