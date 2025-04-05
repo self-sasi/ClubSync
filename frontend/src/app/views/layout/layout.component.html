@@ -1,11 +1,16 @@
-<div class="grid h-screen grid-nogutter" style="background-image: url('ClubSync.png'); background-size: cover; background-position: center;">
+@if(user == undefined) {
+  <div class="flex h-screen w-screen justify-content-center align-items-center fadein animation-duration-200">
+    <app-loader></app-loader>
+  </div>
+} @else {
+<div class="grid h-screen grid-nogutter fadein animation-duration-1000" style="background-image: url('ClubSync.png'); background-size: cover; background-position: center;">
   <div class="col-12">
     <div class="grid h-screen grid-nogutter bg-black-alpha-50">
       <div class="col-2 bg-black-alpha-40">
         <app-sidebar></app-sidebar>
       </div>
       <div class="col-10 border-round-top-left border-white-alpha-20 border-left-3">
-        <div class="grid justify-content-end pt-4 pr-4">
+        <div class="grid justify-content-end pt-4 pr-4 fadeindown animation-duration-400">
             <p-button (click)="showProfileDialog()" icon="pi pi-user" [rounded]="true" [outlined]="true" size="large" severity="primary"/>
         </div>
         <router-outlet></router-outlet>
@@ -14,3 +19,5 @@
   </div>
 </div>
 <app-profile-dialog [(visible)]="profileVisible" ></app-profile-dialog>
+}
+

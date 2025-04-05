@@ -1,6 +1,6 @@
 <div class="flex flex-column justify-between w-full h-full text-white px-3">
   <!-- Top logo section -->
-  <div class="w-full text-center pt-4 pb-4">
+  <div class="w-full text-center pt-4 pb-4 fadeindown animation-duration-300">
     <div class="w-full">
       <span class="text-6xl text-white">Club</span>
       <span class="text-6xl text-primary">Sync</span>
@@ -9,7 +9,7 @@
   </div>
 
   <!-- Middle flexible content -->
-  <div class="flex-1 overflow-y-scroll">
+  <div class="flex-1 overflow-y-scroll fadeindown animation-duration-400">
     <ul>
       <li>Home</li>
       <li>Profile</li>
@@ -19,7 +19,7 @@
   </div>
 
   <!-- Bottom fixed section -->
-  <div class="w-full pt-4 pb-4">
+  <div class="w-full pt-4 pb-4 fadeindown animation-duration-500">
     <p-divider />
     <p-button (click)="logout()" label="Logout" variant="outlined" severity="danger" styleClass="w-full text-xl" size="large" icon="pi pi-sign-out" />
   </div>

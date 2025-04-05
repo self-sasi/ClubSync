@@ -6,10 +6,11 @@ import { ButtonModule } from 'primeng/button';
 import { User } from '../../models/user';
 import { AuthApiService } from '../../services/auth.api.service';
 import { ProfileDialogComponent } from '../../components/profile-dialog/profile-dialog.component';
+import { LoaderComponent } from '../../components/loader/loader.component';
 
 @Component({
   selector: 'app-layout',
-  imports: [CommonModule, SidebarComponent, RouterOutlet, ButtonModule, ProfileDialogComponent],
+  imports: [CommonModule, SidebarComponent, RouterOutlet, ButtonModule, ProfileDialogComponent, LoaderComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
@@ -17,6 +18,7 @@ export class LayoutComponent implements OnInit {
 
   user : User | undefined = undefined;
   profileVisible : boolean = false;
+  test = undefined
 
   constructor(private _authApiService : AuthApiService, private router : Router) {}
 
