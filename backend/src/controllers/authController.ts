@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUser } from '../services/authService.js';
+import { registerUser, loginUser, verifyUser } from '../services/authService.js';
 import { User } from '../types/user.js';
 import { generateToken } from '../config/jwt.js';
+import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 
 export async function signup(req: Request, res: Response) {
     const user: User = req.body;
@@ -21,6 +22,17 @@ export async function login(req: Request, res: Response) {
         const token = generateToken(user.UserId);
         res.status(200).json({ token, user });
     } catch (err: any) {
+        res.status(401).json({ error: err.message });
+    }
+}
+
+export async function verify(req : AuthenticatedRequest, res : Response) {
+    const userId = req.user.userId;
+
+    try {
+        const user = await verifyUser(userId);
+        res.status(200).json(user);
+    } catch (err : any) {
         res.status(401).json({ error: err.message });
     }
 }

@@ -33,8 +33,6 @@ export class ProfileDialogComponent implements OnInit {
           if (user != undefined) {
             this.user = user;
             this.setUniversity(user.UniversityId);
-          } else {
-            this.toastService.showToast('error', 'Error while fetching profile', 'The User value is Undefined.');
           };
         },
         error : (err : Error) => this.toastService.showToast('error', 'Error while fetching profile', err.message),

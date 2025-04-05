@@ -1,4 +1,4 @@
-import { fetchAllUniversities } from "../services/UniversityApiService.js";
+import { fetchAllUniversities } from "../services/universityService.js";
 import { Request, Response } from 'express';
 
 export async function getUniversities(req: Request, res: Response) {

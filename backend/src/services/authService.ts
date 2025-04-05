@@ -23,7 +23,7 @@ export async function registerUser(user: User) {
     return result;
 }
 
-export async function loginUser(email: string, password: string): Promise<Omit<User, 'Password'>> {
+export async function loginUser(email: string, password: string) {
     const [rows]: any = await pool.query(`SELECT * FROM User WHERE Email = ?`, [email]);
 
     if (rows.length === 0) {
@@ -38,5 +38,18 @@ export async function loginUser(email: string, password: string): Promise<Omit<U
     }
 
     const { Password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+}
+
+export async function verifyUser(userId : number) {
+
+    const [result] = await pool.query('SELECT * From User WHERE UserId = ?', userId);
+    const user : User = result[0];
+    
+    if (!user) {
+        return new Error("User not found");
+    } 
+
+    const {Password, ...userWithoutPassword} = user;
     return userWithoutPassword;
 }

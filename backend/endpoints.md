@@ -49,6 +49,28 @@ Logs a user in.
 
 ---
 
+### POST `/api/auth/verify`
+Logs a user in without using credentials. uses token istead
+
+#### Request Body:
+```ts
+// only Bearer token
+```
+
+#### Response:
+```ts
+{
+    UserId?: number;
+    FirstName: string;
+    LastName: string;
+    Email: string;
+    Location?: string;
+    UniversityId: number;
+}
+```
+
+---
+
 ## University
 
 ### GET `/api/uni`
