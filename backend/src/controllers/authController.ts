@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { registerUser, loginUser, verifyUser, updateUser } from '../services/authService.js';
+import { registerUser, loginUser, verifyUser, updateUser, updatePassword } from '../services/authService.js';
 import { User } from '../types/user.js';
 import { generateToken } from '../config/jwt.js';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
@@ -43,8 +43,20 @@ export async function update(req : AuthenticatedRequest, res : Response) {
 
     try {
         const result = await updateUser(userId, user);
-        res.status(200).json(result);
+        res.sendStatus(204);
     } catch (err : any) {
         res.status(401).json({ error: err.message });
+    }
+}
+
+export async function changePassword(req : AuthenticatedRequest, res : Response) {
+    const userId = req.user.userId;
+    const passwordSet = req.body;
+
+    try {
+        const result = await updatePassword(userId, passwordSet);
+        res.sendStatus(204);
+    } catch (err : any) {
+        res.status(401).json({ error : err.message })
     }
 }

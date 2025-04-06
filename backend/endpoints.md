@@ -90,7 +90,27 @@ userUpdateObject =
 
 #### Response:
 ```ts
-// just confirmation
+// just confirmation 204
+```
+
+---
+### PUT `/api/auth/password`
+Updates user password
+
+#### Request Body:
+```ts
+Baerer token,
+passwordSet =
+{
+    "UserId": 18,
+    "new": "sasi",
+    "old": "sasi123"
+}
+```
+
+#### Response:
+```ts
+// just confirmation 204
 ```
 
 ---

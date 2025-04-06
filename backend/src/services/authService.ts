@@ -65,3 +65,21 @@ export async function updateUser(userId : number, userBody : any) {
 
     return result;
 }
+
+export async function updatePassword(userId : number, passwordSet : any) {
+
+    if (userId != passwordSet.UserId) throw new Error("User creds do not match");
+
+    const [rows]: any = await pool.query(`SELECT Password FROM User WHERE UserId = ?`, [userId]);
+    const storedPassword = rows[0]?.Password;
+    const isMatch = await bcrypt.compare(passwordSet.old, storedPassword);
+
+    if (!isMatch) throw new Error("Passwords do not match");
+
+    const newPassword = await bcrypt.hash(passwordSet.new, 10);
+    const result = await pool.query(
+        `UPDATE User SET Password = ? WHERE UserId = ?`, [newPassword, userId]
+    );
+
+    return result;
+}
