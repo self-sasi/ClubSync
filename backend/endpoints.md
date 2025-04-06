@@ -71,6 +71,30 @@ Logs a user in without using credentials. uses token istead
 
 ---
 
+### PUT `/api/auth/`
+Updates user information
+
+#### Request Body:
+```ts
+Baerer token,
+userUpdateObject =
+{
+    "UserId": 18,
+    "FirstName": "sasi",
+    "LastName": "singh",
+    "Email": "sasi@gmail.com",
+    "Location": null,
+    "UniversityId": 2
+}
+```
+
+#### Response:
+```ts
+// just confirmation
+```
+
+---
+
 ## University
 
 ### GET `/api/uni`

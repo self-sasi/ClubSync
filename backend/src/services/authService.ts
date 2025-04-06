@@ -53,3 +53,15 @@ export async function verifyUser(userId : number) {
     const {Password, ...userWithoutPassword} = user;
     return userWithoutPassword;
 }
+
+export async function updateUser(userId : number, userBody : any) {
+
+    if (userId != userBody.UserId) throw new Error("User creds do not match");
+
+    const result = await pool.query(
+        `UPDATE User SET FirstName = ?, LastName = ?, Email = ?, Location = ?, UniversityId = ? WHERE UserId = ?`,
+        [userBody.FirstName, userBody.LastName, userBody.Email, userBody.Location ?? null, userBody.UniversityId, userId]
+      );
+
+    return result;
+}
