@@ -1,0 +1,19 @@
+### Email verification
+`description` : add logic to verify that email fields are emails and not just simple strings. 
+`priority` : high
+`dev` : `sarthak`
+
+### Frontend sidebar initialize
+`description` : make sidebar buttons and configure routing for different pages.
+`priority` : high
+`dev` : null
+
+### Password change http call from frontend
+`description` : make method for updating user password. password update endpoint already setup. 
+`priority` : mid
+`dev` : null
+
+### Breadcrumb
+`description` : make breadcrumb component which shows the current route. display on horizontal navbar at top of subbody 
+`priority` : low
+`dev` : null

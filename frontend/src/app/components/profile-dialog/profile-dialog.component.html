@@ -1,42 +1,107 @@
 <p-dialog header="Profile" [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" (onHide)="visibleChange.emit(false)">
-  <div class="grid row-gap-2">
-    <div class="col-4">
-      <span class="text-primary">Firstname :</span> {{user?.FirstName}}
-    </div>
-    <div class="col-4">
-      <span class="text-primary">Lastname :</span> {{user?.LastName}}
-    </div>
-    <div class="col-4">
-      <span class="text-primary">Email :</span> {{user?.Email}}
-    </div>
-    <div class="col-12">
-      <span class="text-primary">Location :</span> {{user?.Location != undefined ? user?.Location : 'Location not set'}}
-    </div>
-    <div class="col-12 px-3">
-      <p-divider />
-    </div>
-    <div class="col-12">
-      <div class="grid row-gap-3">
-        <div class="col-12 text-xl">
-          University
-        </div>
-        <div class="col-6">
-          <span class="text-primary">Name :</span> {{userUniversity?.UniversityName}}
-        </div>
-        <div class="col-6">
-          <span class="text-primary">Location :</span> {{userUniversity?.Location}}
-        </div>
+  @if(editMode) {
+    <div class="grid justify-content-center align-items-center">
+
+      <div class="col-12 text-xl text-primary">
+        Please input values :
       </div>
-    </div>
-    <div class="col-12 px-3">
-      <p-divider />
-    </div>
-    <div class="col-12">
-      <div class="flex gap-3">
-        <p-button (click)="test()" label="Edit Profile" variant="outlined" severity="info" icon="pi pi-user-edit" />
-        <p-button label="Change Password" variant="outlined" severity="warn" icon="pi pi-unlock" />
+
+      <div class="col-12 px-3">
+        <p-divider />
+      </div>
+
+      <div class="col-6">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+              <i class="pi pi-user"></i>
+          </p-inputgroup-addon>
+          <input pInputText [(ngModel)]="user!.FirstName" placeholder="Firstname" />
+      </p-inputgroup>
+      </div>
+
+      <div class="col-6">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+              <i class="pi pi-user"></i>
+          </p-inputgroup-addon>
+          <input pInputText [(ngModel)]="user!.LastName" placeholder="Lastname" />
+      </p-inputgroup>
+      </div>
+
+      <div class="col-6">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+              <i class="pi pi-at"></i>
+          </p-inputgroup-addon>
+          <input pInputText [(ngModel)]="user!.Email" placeholder="Email" />
+      </p-inputgroup>
+      </div>
+
+      <div class="col-6">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+              <i class="pi pi-map-marker"></i>
+          </p-inputgroup-addon>
+          <input pInputText [(ngModel)]="user!.Location" placeholder="Location" />
+      </p-inputgroup>
+      </div>
+
+      <div class="col-12 px-3">
+        <p-divider />
+      </div>
+
+      <div class="col-12 ">
+        <div class="flex gap-3">
+          <p-button (click)="saveProfileChanges()" label="Save" variant="outlined" severity="success" icon="pi pi-check-circle" />
+          <p-button (click)="exitEditMode()" label="Cancel" variant="outlined" severity="danger" icon="pi pi-arrow-circle-left" />
+        </div>
       </div>
 
     </div>
-  </div>
+
+  } @else if(passwordChangeMode) {
+
+  } @else {
+    <div class="grid row-gap-2">
+      <div class="col-4">
+        <span class="text-primary">Firstname :</span> {{user?.FirstName}}
+      </div>
+      <div class="col-4">
+        <span class="text-primary">Lastname :</span> {{user?.LastName}}
+      </div>
+      <div class="col-4">
+        <span class="text-primary">Email :</span> {{user?.Email}}
+      </div>
+      <div class="col-12">
+        <span class="text-primary">Location :</span> {{user?.Location != undefined ? user?.Location : 'Location not set'}}
+      </div>
+      <div class="col-12 px-3">
+        <p-divider />
+      </div>
+      <div class="col-12">
+        <div class="grid row-gap-3">
+          <div class="col-12 text-xl">
+            University
+          </div>
+          <div class="col-6">
+            <span class="text-primary">Name :</span> {{userUniversity?.UniversityName}}
+          </div>
+          <div class="col-6">
+            <span class="text-primary">Location :</span> {{userUniversity?.Location}}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 px-3">
+        <p-divider />
+      </div>
+      <div class="col-12">
+        <div class="flex gap-3">
+          <p-button (click)="setEditMode()" label="Edit Profile" variant="outlined" severity="info" icon="pi pi-user-edit" />
+          <p-button (click)="setPasswordChangeMode()" label="Change Password" variant="outlined" severity="warn" icon="pi pi-unlock" />
+        </div>
+
+      </div>
+    </div>
+  }
+
 </p-dialog>

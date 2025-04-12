@@ -45,4 +45,13 @@ export class AuthApiService {
     this._authService.logout();
   }
 
+  updateProfile(user : User) : Observable<any> {
+    return this.http.put<any>('http://localhost:3000/api/auth/', user)
+      .pipe(
+        tap({
+          complete : () => this._user.next(user)
+        }
+    ));
+  }
+
 }

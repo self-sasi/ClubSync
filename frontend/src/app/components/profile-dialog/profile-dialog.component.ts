@@ -8,14 +8,25 @@ import { User } from '../../models/user';
 import { University } from '../../models/University';
 import { ToastService } from '../../services/toast.service';
 import { map } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-profile-dialog',
-  imports: [Dialog, DividerModule, DividerModule, ButtonModule],
+  imports: [Dialog, DividerModule, DividerModule, ButtonModule, FormsModule, InputGroupModule, InputGroupAddonModule, InputTextModule, SelectModule, InputNumberModule],
   templateUrl: './profile-dialog.component.html',
   styleUrl: './profile-dialog.component.css'
 })
 export class ProfileDialogComponent implements OnInit {
+
+  editMode : boolean = false;
+  passwordChangeMode : boolean = false;
+
+  testVal : any;
 
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
@@ -52,5 +63,33 @@ export class ProfileDialogComponent implements OnInit {
   test() {
     console.log(this.user);
     console.log(this.userUniversity);
+  }
+
+  setEditMode() {
+    this.editMode = true;
+    this.passwordChangeMode = false;
+  }
+
+  exitEditMode() {
+    this.editMode = false;
+    this.passwordChangeMode = false;
+  }
+
+  setPasswordChangeMode() {
+    this.passwordChangeMode = true;
+    this.editMode = false;
+  }
+
+  exitPasswordChangeMode() {
+    this.passwordChangeMode = false;
+    this.editMode = false;
+  }
+
+  saveProfileChanges() {
+    this.authApiService.updateProfile(this.user!).subscribe({
+      next : () => this.toastService.showToast("success", "Successful", "Profile details were updated"),
+      error : (err : Error) => this.toastService.showToast("error", "Error while updating Profile", err.message),
+      complete : () => this.exitEditMode()
+    })
   }
 }
