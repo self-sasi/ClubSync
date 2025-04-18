@@ -24,6 +24,11 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     this.universityApiService.fetchUniversities();
     this.universityApiService.universities$.subscribe((universities) => this.universities = universities);
+    this.authApiService.user$.subscribe((user) => {
+      if (user) {
+        this.router.navigateByUrl('/');
+      }
+    });
   }
 
   // this is depricated as I have moved the logic to authApiService, when the service is instantiated it already attempts to fetch the token and if the token is present, makes an api call to the backend and sets the return value as the next state of the user behaviour subject which is then captured by other components through direct subscription
