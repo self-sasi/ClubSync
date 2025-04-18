@@ -7,6 +7,7 @@ import { User } from '../../models/user';
 import { AuthApiService } from '../../services/auth.api.service';
 import { ProfileDialogComponent } from '../../components/profile-dialog/profile-dialog.component';
 import { LoaderComponent } from '../../components/loader/loader.component';
+import { ClubApiService } from '../../services/club.api.service';
 
 @Component({
   selector: 'app-layout',
@@ -20,18 +21,17 @@ export class LayoutComponent implements OnInit {
   profileVisible : boolean = false;
   test = undefined
 
-  constructor(private _authApiService : AuthApiService, private router : Router) {}
+  constructor(private _authApiService : AuthApiService, private router : Router, private _clubApiService : ClubApiService) {}
 
   ngOnInit(): void {
-      this._authApiService.user$.subscribe({
-        next : (user : User | undefined) => {
-          if (user == undefined) {
-            // this.router.navigateByUrl('/auth')
-          }
+    this._authApiService.user$.subscribe({
+      next : (user : User | undefined) => {
+        if (user) {
           this.user = user;
-          console.log(this.user)
+          this._clubApiService.getClubs(this.user.UniversityId).subscribe();
         }
-      })
+      }
+    })
   }
 
   showProfileDialog() {

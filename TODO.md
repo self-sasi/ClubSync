@@ -17,3 +17,8 @@
 `description` : make breadcrumb component which shows the current route. display on horizontal navbar at top of subbody 
 `priority` : low
 `dev` : null
+
+### get university clubs 
+`description` : change the architecture of the api to not require university id. rather, use token from header to extract userId, query db for his uni id and get unis for the queried uni id. 
+`priority` : high
+`dev` : null
