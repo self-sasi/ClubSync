@@ -17,7 +17,20 @@ export class AuthApiService {
   private _user : BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
   user$ : Observable<User | undefined> = this._user.asObservable();
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient) {
+    const token = this._authService.getToken();
+
+    if (token) {
+      this.validateToken(token).subscribe({
+        error: () => {
+          this._authService.logout();
+          this._user.next(undefined);
+        }
+      });
+    } else {
+      this._user.next(undefined);
+    }
+  }
 
   signup(userSignupBody : UserSignup) {
     return this.http.post('http://localhost:3000/api/auth/signup' , userSignupBody);

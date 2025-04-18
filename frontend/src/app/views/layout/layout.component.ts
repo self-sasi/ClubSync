@@ -26,7 +26,7 @@ export class LayoutComponent implements OnInit {
       this._authApiService.user$.subscribe({
         next : (user : User | undefined) => {
           if (user == undefined) {
-            this.router.navigateByUrl('/auth')
+            // this.router.navigateByUrl('/auth')
           }
           this.user = user;
           console.log(this.user)
