@@ -24,10 +24,10 @@ export class ClubComponent implements OnInit {
 
   ngOnInit(): void {
     this.clubId = parseInt(this.route.snapshot.paramMap.get('clubId')!, 10);
-    this.fetchClub();
+    this.loadClubInformation();
   }
 
-  fetchClub(): void {
+  loadClubInformation(): void {
     this.clubApiService.getClub(this.clubId).subscribe({
       next: (club: Club) => {
         this.club = club;
