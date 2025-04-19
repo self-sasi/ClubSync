@@ -6,8 +6,6 @@ export async function isUserInClub(userId: number, clubId: number): Promise<bool
         [userId, clubId]
     );
 
-    console.log('Membership check - User:', userId, 'Club:', clubId, 'Rows:', rows);
-
     return Array.isArray(rows) && rows.length > 0;
 }
 

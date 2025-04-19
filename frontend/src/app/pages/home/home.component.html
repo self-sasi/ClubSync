@@ -15,15 +15,17 @@
       <div class="col-12">
         <div class="grid column-gap-3">
 
-          <div class="card bg-white-alpha-10 surface-border smooth-transition border-1 border-round-lg text-primary text-2xl hover:bg-white-alpha-20 cursor-pointer col-3 justify" >
-            <span>Club 1</span>
-          </div>
-
-          <div class="card bg-white-alpha-10 surface-border border-1 border-round-lg text-primary text-2xl hover:bg-white-alpha-20 cursor-pointer col-3">
-            <span>Club 1</span>
-          </div>
+          @for (club of userClubs; track $index) {
+            <div class="card bg-white-alpha-10 surface-border smooth-transition border-1 border-round-lg text-primary text-2xl hover:bg-white-alpha-20 cursor-pointer col-3 justify" (click)="routeTo(club.ClubId)" >
+              <span>{{club.ClubName}}</span>
+            </div>
+          }
 
         </div>
+      </div>
+
+      <div class="col-12">
+
       </div>
     </div>
   </div>

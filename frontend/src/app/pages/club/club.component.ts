@@ -3,10 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClubApiService } from '../../services/club.api.service';
 import { ToastService } from '../../services/toast.service';
 import { Club } from '../../models/club';
+import { TabsModule } from 'primeng/tabs';
+import { CommonModule } from '@angular/common';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-club',
-  imports: [],
+  imports: [TabsModule, CommonModule, DividerModule],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css'
 })
