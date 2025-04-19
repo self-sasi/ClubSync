@@ -11,7 +11,9 @@ export class UniversityApiService {
   private _universities = new BehaviorSubject<University[]>([]);
   public universities$ = this._universities.asObservable();
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient) {
+    this.fetchUniversities();
+   }
 
   fetchUniversities() : any {
     this.http.get<University[]>('http://localhost:3000/api/uni')
