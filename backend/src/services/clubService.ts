@@ -1,7 +1,19 @@
 import { pool } from '../config/database.js';
 
-export async function fetchAllClubs(universityId : number) {
-    const [clubs] = await pool.query("SELECT * FROM Club WHERE Club.UniversityId = ? ;", universityId);
+export async function fetchAllClubs(userId: number) {
+    const [clubs] = await pool.query(
+        `SELECT 
+            c.ClubId,
+            c.ClubName,
+            c.Description,
+            c.CreationDate,
+            cm.MemberId IS NOT NULL AS IsMember
+        FROM Club c
+        INNER JOIN User u ON c.UniversityId = u.UniversityId
+        LEFT JOIN ClubMember cm ON cm.ClubId = c.ClubId AND cm.UserId = u.UserId
+        WHERE u.UserId = ?;`,
+        [userId]
+    );
     return clubs;
 }
 
@@ -38,4 +50,18 @@ export async function fetchClubAnnouncements(clubId : number) {
 export async function fetchClubAnnouncementDiscussions(announcemendId : number) {
     const [discussions] = await pool.query("SELECT * FROM DiscussionChannel WHERE AnnouncementId = ?;", announcemendId);
     return discussions;
+}
+
+export async function registerUserInClub(userId: number, clubId: number) {
+    await pool.query(
+        "INSERT INTO ClubMember (UserId, ClubId, DateJoined) VALUES (?, ?, CURDATE());",
+        [userId, clubId]
+    );
+}
+
+export async function unRegisterUserInClub(userId: number, clubId: number) {
+    await pool.query(
+        "DELETE FROM ClubMember WHERE UserId = ? AND ClubId = ?;",
+        [userId, clubId]
+    );
 }

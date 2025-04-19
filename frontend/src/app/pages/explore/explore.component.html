@@ -12,7 +12,12 @@
             <div class="col-12">
               <div class="grid grid-nogutter justify-content-between">
                 <span class="text-2xl text-primary">{{club.ClubName}}</span>
-                <p-button label="Join" variant="outlined" severity="success"/>
+                @if (club.IsMember == 1) {
+                  <p-button label="Leave" variant="outlined" severity="danger" (click)="leaveSelectedClub(club.ClubId)"/>
+                }
+                @else {
+                  <p-button label="Join" variant="outlined" severity="success" (click)="joinSelectedClub(club.ClubId)"/>
+                }
               </div>
               <p-divider />
             </div>

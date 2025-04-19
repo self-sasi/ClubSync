@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs } from '../services/clubService.js';
+import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs, registerUserInClub, unRegisterUserInClub } from '../services/clubService.js';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 
-export async function getAllClubs(req: Request, res: Response) {
+export async function getAllClubs(req: AuthenticatedRequest, res: Response) {
 
-    const universityId = parseInt(req.params.universityId, 10);
+    const userId = req.user?.userId;
 
     try {
-        const clubs = await fetchAllClubs(universityId);
+        const clubs = await fetchAllClubs(userId);
         res.status(200).json(clubs);
     } 
     catch (err: any) {
@@ -92,5 +92,39 @@ export async function getClubAnnouncementDiscussions(req : Request, res : Respon
     }
     catch (err : any) {
         res.status(404).json({ message : "announcement discussions not found"} );
+    }
+}
+
+export async function joinClub(req : AuthenticatedRequest, res : Response) {
+
+    const userId = req.user?.userId;
+    const { clubId } = req.body;
+
+    if (!userId || !clubId) {
+        return res.status(400).json({ message: "Missing userId or clubId" });
+    }
+
+    try {
+        await registerUserInClub(userId, clubId); 
+        res.status(200).json({ message: "User successfully joined the club" });
+    } catch (err: any) {
+        res.status(500).json({ message: "Could not join club", error: err.message });
+    }
+}
+
+
+export async function leaveClub(req: AuthenticatedRequest, res: Response) {
+    const userId = req.user?.userId;
+    const clubId = parseInt(req.params.clubId, 10);
+
+    if (!userId || isNaN(clubId)) {
+        return res.status(400).json({ message: "Missing or invalid clubId" });
+    }
+
+    try {
+        await unRegisterUserInClub(userId, clubId);
+        res.status(200).json({ message: "User successfully left the club" });
+    } catch (err: any) {
+        res.status(500).json({ message: "Could not leave club", error: err.message });
     }
 }

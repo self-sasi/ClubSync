@@ -29,7 +29,6 @@ export class LayoutComponent implements OnInit {
       next : (user : User | undefined) => {
         if (user) {
           this.user = user;
-          this._clubApiService.getClubs(this.user.UniversityId).subscribe();
         }
       }
     });

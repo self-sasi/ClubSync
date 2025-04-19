@@ -25,6 +25,13 @@ export class ClubApiService {
         this._userClubs.next(undefined);
       }
     });
+
+    this.getClubs().subscribe({
+      error : (err : Error) => {
+        this.toastService.showToast('error', 'Error fetching clubs', err.message);
+        this._clubs.next(undefined);
+      }
+    });
    }
 
   getUserClubs() : Observable<Club[]> {
@@ -36,12 +43,31 @@ export class ClubApiService {
       );
   }
 
-  getClubs(universityId : number) {
-    return this.http.get<Club[]>(`http://localhost:3000/api/clubs/university/${universityId}`)
+  getClubs() {
+    return this.http.get<Club[]>(`http://localhost:3000/api/clubs/university`)
     .pipe(
       tap(response => {
         this._clubs.next(response);
       })
     );
   }
+
+  joinClub(clubId: number) {
+    return this.http.post('http://localhost:3000/api/clubs/join', { clubId }).pipe(
+      tap(() => {
+        this.getClubs().subscribe();
+        this.getUserClubs().subscribe();
+      })
+    );
+  }
+
+  leaveClub(clubId: number) {
+    return this.http.delete(`http://localhost:3000/api/clubs/leave/${clubId}`).pipe(
+      tap(() => {
+        this.getClubs().subscribe();
+        this.getUserClubs().subscribe();
+      })
+    );
+  }
+
 }

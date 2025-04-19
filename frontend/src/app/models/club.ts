@@ -4,4 +4,5 @@ export interface Club {
   Description : string;
   CreationDate : string;
   UniversityId : number;
+  IsMember : number;
 }
