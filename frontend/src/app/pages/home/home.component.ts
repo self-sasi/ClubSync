@@ -13,17 +13,11 @@ import { Club } from '../../models/club';
 export class HomeComponent implements OnInit {
 
   userName : string | undefined = '';
-  userClubs : Club[] | undefined = [];
 
   private _authApiService = inject(AuthApiService);
-  private _clubApiService = inject(ClubApiService);
 
   ngOnInit(): void {
     this._authApiService.user$.subscribe((user) => this.userName = user?.FirstName);
-    this._clubApiService.userClubs$.subscribe((userClubs) => this.userClubs = userClubs);
   }
 
-  test() {
-    console.log(this.userClubs)
-  }
 }

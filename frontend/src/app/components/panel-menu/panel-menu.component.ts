@@ -1,9 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { PanelMenu } from 'primeng/panelmenu';
+import { ClubApiService } from '../../services/club.api.service';
+import { Club } from '../../models/club';
 
 @Component({
   selector: 'app-panel-menu',
+  standalone: true,
   imports: [PanelMenu],
   templateUrl: './panel-menu.component.html',
   styleUrl: './panel-menu.component.css'
@@ -11,65 +14,65 @@ import { PanelMenu } from 'primeng/panelmenu';
 export class PanelMenuComponent {
 
   private _router = inject(Router);
-  // todo -> make a function for routing for reusable code, i have rewritten the same line again and again
+  private _clubApiService = inject(ClubApiService);
 
-  items = [
+  clubList = signal<any[]>([]);
+
+  items = computed(() => [
     {
       label: 'Home',
       icon: 'pi pi-home',
-      command : () => this._router.navigateByUrl('/')
+      command: () => this._router.navigateByUrl('/')
     },
     {
       label: 'Explore',
       icon: 'pi pi-plus',
-      command : () => this._router.navigateByUrl('/explore')
+      command: () => this._router.navigateByUrl('/explore')
     },
     {
-        label: 'Clubs',
-        icon: 'pi pi-graduation-cap',
-        items: [
-            {
-                label: 'Club 1',
-                icon: 'pi pi-hashtag',
-                command : () => this._router.navigateByUrl('/club')
-            },
-            {
-                label: 'Club 2',
-                icon: 'pi pi-hashtag',
-                command : () => this._router.navigateByUrl('/club')
-            },
-            {
-                label: 'Club 3',
-                icon: 'pi pi-hashtag',
-                command : () => this._router.navigateByUrl('/club')
-            }
-        ]
+      label: 'Clubs',
+      icon: 'pi pi-graduation-cap',
+      items: this.clubList()
     },
     {
-      label : 'Events',
+      label: 'Events',
       icon: 'pi pi-th-large',
       items: [
         {
-          label : 'All',
-          icon : 'pi pi-list',
-          command : () => this._router.navigateByUrl('/events')
+          label: 'All',
+          icon: 'pi pi-list',
+          command: () => this._router.navigateByUrl('/events')
         },
         {
-          label : 'Attending',
-          icon : 'pi pi-list-check',
-          command : () => this._router.navigateByUrl('/events')
+          label: 'Attending',
+          icon: 'pi pi-list-check',
+          command: () => this._router.navigateByUrl('/events')
         },
         {
-          label : 'Calendar',
-          icon : 'pi pi-calendar',
-          command : () => this._router.navigateByUrl('/events')
+          label: 'Calendar',
+          icon: 'pi pi-calendar',
+          command: () => this._router.navigateByUrl('/events')
         }
       ]
     },
     {
-      label : 'Inbox',
+      label: 'Inbox',
       icon: 'pi pi-inbox',
-      command : () => this._router.navigateByUrl('/inbox')
+      command: () => this._router.navigateByUrl('/inbox')
     }
-];
+  ]);
+
+  constructor() {
+
+    this._clubApiService.userClubs$.subscribe((userClubs: Club[] | undefined) => {
+      if (userClubs) {
+        const clubs = userClubs.map(club => ({
+          label: club.ClubName,
+          icon: 'pi pi-hashtag',
+          command: () => this._router.navigateByUrl('/club')
+        }));
+        this.clubList.set(clubs);
+      }
+    });
+  }
 }

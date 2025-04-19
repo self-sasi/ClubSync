@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { Router, RouterOutlet } from '@angular/router';
@@ -8,6 +8,7 @@ import { AuthApiService } from '../../services/auth.api.service';
 import { ProfileDialogComponent } from '../../components/profile-dialog/profile-dialog.component';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { ClubApiService } from '../../services/club.api.service';
+import { Club } from '../../models/club';
 
 @Component({
   selector: 'app-layout',
@@ -31,7 +32,7 @@ export class LayoutComponent implements OnInit {
           this._clubApiService.getClubs(this.user.UniversityId).subscribe();
         }
       }
-    })
+    });
   }
 
   showProfileDialog() {

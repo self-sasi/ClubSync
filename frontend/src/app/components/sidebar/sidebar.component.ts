@@ -3,6 +3,8 @@ import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { AuthApiService } from '../../services/auth.api.service';
 import { PanelMenuComponent } from '../panel-menu/panel-menu.component';
+import { Club } from '../../models/club';
+import { ClubApiService } from '../../services/club.api.service';
 
 @Component({
   selector: 'app-sidebar',

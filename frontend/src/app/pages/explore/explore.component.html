@@ -1,2 +1,33 @@
-<p>explore works!</p>
-<button (click)="test()">press me</button>
+<div class="grid px-4 row-gap-4">
+  <div class="col-12 text-3xl ">
+    Discover Clubs at your University!
+  </div>
+  <div class="col-12">
+    <div class="grid column-gap-3">
+
+      @for (club of clubs; track $index) {
+        <div class="card bg-white-alpha-10 surface-border border-1 border-round-lg hover:bg-white-alpha-20 cursor-pointer col-4 justify smooth-transition h-18rem" (click)="test()">
+          <div class="grid grid-nogutter">
+
+            <div class="col-12">
+              <div class="grid grid-nogutter justify-content-between">
+                <span class="text-2xl text-primary">{{club.ClubName}}</span>
+                <p-button label="Join" variant="outlined" severity="success"/>
+              </div>
+              <p-divider />
+            </div>
+
+            <div class="col-12">
+              <span class="text-primary">Description: </span>{{club.Description}}
+              <p-divider />
+              since {{club.CreationDate}}
+            </div>
+
+          </div>
+
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

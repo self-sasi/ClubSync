@@ -7,3 +7,7 @@ body {
   padding: 0;
   overflow: hidden;
 }
+
+.smooth-transition {
+  transition: all 0.3s ease;
+}

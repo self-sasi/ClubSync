@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ClubApiService } from '../../services/club.api.service';
 import { Club } from '../../models/club';
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-explore',
-  imports: [],
+  imports: [ButtonModule, DividerModule],
   templateUrl: './explore.component.html',
   styleUrl: './explore.component.css'
 })
