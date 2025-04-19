@@ -6,7 +6,7 @@ const clubRouter = Router();
 
 clubRouter.get('/university', authenticateToken, getAllClubs);
 clubRouter.get('', authenticateToken, getUserClubs);
-clubRouter.get('/club/:clubId', getClub);
+clubRouter.get('/club/:clubId', authenticateToken, getClub);
 clubRouter.get('/club/:clubId/members', getClubMembers);
 clubRouter.get('/club/:clubId/events', getClubEvents); 
 clubRouter.get('/club/:clubId/announcements', getClubAnnouncements); 

@@ -23,7 +23,7 @@ export const routes: Routes = [
         component : ExploreComponent
       },
       {
-        path : 'club',
+        path : 'club/:clubId',
         component : ClubComponent
       },
       {

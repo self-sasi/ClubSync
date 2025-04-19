@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs, registerUserInClub, unRegisterUserInClub } from '../services/clubService.js';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
+import { isUserInClub } from '../helpers/clubHelpers.js';
 
 export async function getAllClubs(req: AuthenticatedRequest, res: Response) {
 
@@ -29,11 +30,17 @@ export async function getUserClubs(req: AuthenticatedRequest, res: Response) {
     }
 }
 
-export async function getClub(req: Request, res: Response) {
+export async function getClub(req: AuthenticatedRequest, res: Response) {
 
+    const userId = req.user?.userId;
     const clubId = parseInt(req.params.clubId, 10);
 
     try {
+        const isMember = await isUserInClub(userId, clubId);
+        if (!isMember) {
+            return res.status(403).json({ message: "Access denied: not a member of this club" });
+        }
+        
         const club = await fetchClub(clubId);
         res.status(200).json(club[0]);
     }

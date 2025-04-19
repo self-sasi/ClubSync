@@ -70,4 +70,8 @@ export class ClubApiService {
     );
   }
 
+  getClub(clubId: number) {
+    return this.http.get<Club>(`http://localhost:3000/api/clubs/club/${clubId}`);
+  }
+
 }

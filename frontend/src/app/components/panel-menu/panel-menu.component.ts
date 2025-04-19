@@ -69,7 +69,7 @@ export class PanelMenuComponent {
         const clubs = userClubs.map(club => ({
           label: club.ClubName,
           icon: 'pi pi-hashtag',
-          command: () => this._router.navigateByUrl('/club')
+          command: () => this._router.navigateByUrl(`/club/${club.ClubId}`)
         }));
         this.clubList.set(clubs);
       }
