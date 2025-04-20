@@ -142,3 +142,21 @@ export async function registerNewClub(userId: number, clubName: string, descript
 
     return { clubId };
 }
+
+export async function removeMember(targetMemberId: number, clubId: number) {
+    await pool.query('DELETE FROM ClubNormalMember WHERE MemberId = ? AND ClubId = ?;', [targetMemberId, clubId]);
+    await pool.query('DELETE FROM ClubAdmin WHERE MemberId = ? AND ClubId = ?;', [targetMemberId, clubId]);
+    await pool.query('DELETE FROM ClubMember WHERE MemberId = ? AND ClubId = ?;', [targetMemberId, clubId]);
+  }
+  
+export async function promoteMemberToAdmin(targetMemberId: number, clubId: number) {
+await pool.query(
+    'DELETE FROM ClubNormalMember WHERE MemberId = ? AND ClubId = ?;',
+    [targetMemberId, clubId]
+);
+
+await pool.query(
+    'INSERT INTO ClubAdmin (MemberId, ClubId) VALUES (?, ?);',
+    [targetMemberId, clubId]
+);
+}

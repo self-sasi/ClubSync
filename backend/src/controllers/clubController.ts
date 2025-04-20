@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs, registerNewClub, registerUserInClub, unRegisterUserInClub } from '../services/clubService.js';
+import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs, promoteMemberToAdmin, registerNewClub, registerUserInClub, removeMember, unRegisterUserInClub } from '../services/clubService.js';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 import { isUserClubAdmin, isUserInClub } from '../helpers/clubHelpers.js';
 
@@ -157,3 +157,57 @@ export async function createClub(req: AuthenticatedRequest, res: Response) {
         res.status(500).json({ message: "Failed to create club", error: err.message });
     }
 }
+
+export async function removeMemberFromClub(req: AuthenticatedRequest, res: Response) {
+    const userId = req.user?.userId;
+    const memberId = parseInt(req.params.memberId, 10);
+    const clubId = parseInt(req.params.clubId, 10);
+  
+    if (!userId || isNaN(memberId) || isNaN(clubId)) {
+      return res.status(400).json({ message: "Missing or invalid parameters" });
+    }
+
+    const isMember = await isUserInClub(userId, clubId);
+    if (!isMember) {
+        return res.status(403).json({ message: "Access denied: not a member of this club" });
+    }
+  
+    const isAdmin = await isUserClubAdmin(userId, clubId);
+    if (!isAdmin) {
+      return res.status(403).json({ message: "Only club admins can remove members" });
+    }
+  
+    try {
+      await removeMember(memberId, clubId);
+      res.status(200).json({ message: "Member removed successfully" });
+    } catch (err: any) {
+      res.status(500).json({ message: "Failed to remove member", error: err.message });
+    }
+}
+
+export async function makeClubAdmin(req: AuthenticatedRequest, res: Response) {
+    const userId = req.user?.userId;
+    const memberId = parseInt(req.params.memberId, 10);
+    const clubId = parseInt(req.params.clubId, 10);
+  
+    if (!userId || isNaN(memberId) || isNaN(clubId)) {
+      return res.status(400).json({ message: "Missing or invalid parameters" });
+    }
+    const isMember = await isUserInClub(userId, clubId);
+    if (!isMember) {
+        return res.status(403).json({ message: "Access denied: not a member of this club" });
+    }
+  
+    const isAdmin = await isUserClubAdmin(userId, clubId);
+    if (!isAdmin) {
+      return res.status(403).json({ message: "Only club admins can promote members" });
+    }
+  
+    try {
+      await promoteMemberToAdmin(memberId, clubId);
+      res.status(200).json({ message: "Member promoted to admin" });
+    } catch (err: any) {
+      res.status(500).json({ message: "Failed to promote member", error: err.message });
+    }
+  }
+  

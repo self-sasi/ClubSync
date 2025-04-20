@@ -81,11 +81,15 @@ export class ClubComponent implements OnInit {
     return this.clubMembers[this.selectedMemberRole] || [];
   }
 
-  removeMember() {
-
+  removeMember(memberId : number) {
+    this.clubApiService.removeMember(memberId, this.clubId).subscribe({
+      complete : () => this.loadClubInformation()
+    });
   }
 
-  promoteMember() {
-
+  promoteMember(memberId : number) {
+    this.clubApiService.promoteToAdmin(memberId, this.clubId).subscribe({
+      complete : () => this.loadClubInformation()
+    });
   }
 }

@@ -95,5 +95,32 @@ export class ClubApiService {
     );
   }
 
+  removeMember(memberId: number, clubId: number) {
+    return this.http.delete(`http://localhost:3000/api/clubs/member/${memberId}/${clubId}`).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Member Removed', 'The member was removed from the club.');
+          this.getClubMembers(clubId).subscribe();
+        },
+        error: (err) => {
+          this.toastService.showToast('error', 'Remove Failed', err.error?.message || err.message);
+        }
+      })
+    );
+  }
+
+  promoteToAdmin(memberId: number, clubId: number) {
+    return this.http.put(`http://localhost:3000/api/clubs/promote/${memberId}/${clubId}`, {}).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Promotion Successful', 'The member was promoted to admin.');
+          this.getClubMembers(clubId).subscribe();
+        },
+        error: (err) => {
+          this.toastService.showToast('error', 'Promotion Failed', err.error?.message || err.message);
+        }
+      })
+    );
+  }
 
 }
