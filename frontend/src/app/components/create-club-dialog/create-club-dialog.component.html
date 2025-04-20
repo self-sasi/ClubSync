@@ -1,0 +1,48 @@
+<p-dialog
+  header="Create a New Club"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [maximizable]="true"
+  (onHide)="cancel()"
+>
+  <div class="p-fluid">
+    <div class="mb-3 text-red-600">
+      ⚠️ Please note: Only create a club if you intend to actively manage it. Misuse or spammy entries will be flagged and removed.
+    </div>
+
+    <div class="mb-3">
+      <label for="clubName" class="block text-gray-700 mb-1">Club Name</label>
+      <input
+        id="clubName"
+        type="text"
+        pInputText
+        [(ngModel)]="clubObj.clubName"
+        placeholder="e.g. Coding Club"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="description" class="block text-gray-700 mb-1">Description</label>
+      <textarea
+        id="description"
+        pInputTextarea
+        rows="4"
+        [(ngModel)]="clubObj.description"
+        placeholder="Tell people what your club is about..."
+      ></textarea>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <button pButton label="Cancel" class="p-button-text" (click)="cancel()"></button>
+      <button
+        pButton
+        label="Create"
+        icon="pi pi-check"
+        [disabled]="!clubObj.clubName.trim() || !clubObj.description.trim()"
+        (click)="registerClub()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

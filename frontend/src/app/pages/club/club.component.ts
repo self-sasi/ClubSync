@@ -23,7 +23,7 @@ export class ClubComponent implements OnInit {
   clubId!: number;
   clubMembers : any;
 
-  selectedSize: string | undefined = "small";
+  selectedSize: "small" | "large" | undefined = "small";
   selectedMemberRole = 'normal';
   memberViewOptions = [
     { label: 'Normal Members', value: 'normal' },
@@ -79,5 +79,13 @@ export class ClubComponent implements OnInit {
   getDisplayedMembers() {
     if (!this.clubMembers) return [];
     return this.clubMembers[this.selectedMemberRole] || [];
+  }
+
+  removeMember() {
+
+  }
+
+  promoteMember() {
+
   }
 }

@@ -62,16 +62,17 @@
                 <tr>
                   <th>Name</th>
                   <th>Date Joined</th>
-                  <th *ngIf="club?.IsAdmin">Action</th>
+                  <th *ngIf="club?.IsAdmin && selectedMemberRole == 'normal'">Action</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-member>
                 <tr>
                   <td>{{ member.FirstName }} {{ member.LastName }}</td>
                   <td>{{ member.DateJoined | date: 'mediumDate' }}</td>
-                  <td *ngIf="club?.IsAdmin">
+                  <td *ngIf="club?.IsAdmin && selectedMemberRole == 'normal'">
                     <!-- Admin-only actions, e.g., Promote/Demote -->
-                    <p-button icon="pi pi-user-minus" severity="danger" size="small" label="Remove" />
+                    <p-button icon="pi pi-user-minus" severity="danger" size="small" label="Remove" (click)="removeMember()" />
+                    <p-button icon="pi pi-verified" severity="info" size="small" label="Promote" (click)="promoteMember()"/>
                   </td>
                 </tr>
               </ng-template>

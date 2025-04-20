@@ -35,7 +35,8 @@ export class PanelMenuComponent {
       items: [
         {
           label: 'Create',
-          icon: 'pi pi-plus'
+          icon: 'pi pi-plus',
+          command: () => this._router.navigate([{ outlets: { modal: ['club', 'create'] } }])
         },
         ...this.clubList()]
     },

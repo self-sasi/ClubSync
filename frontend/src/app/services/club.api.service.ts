@@ -78,4 +78,22 @@ export class ClubApiService {
     return this.http.get(`http://localhost:3000/api/clubs/club/${clubId}/members`);
   }
 
+  createClub(clubData: { clubName: string; description: string }) {
+    return this.http.post('http://localhost:3000/api/clubs/create', clubData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Club Created', 'Your club has been successfully created.');
+        },
+        error: (err) => {
+          this.toastService.showToast('error', 'Creation Failed', err.message);
+        },
+        complete: () => {
+          this.getClubs().subscribe();
+          this.getUserClubs().subscribe();
+        }
+      })
+    );
+  }
+
+
 }
