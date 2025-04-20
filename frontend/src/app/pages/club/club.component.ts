@@ -6,10 +6,14 @@ import { Club } from '../../models/club';
 import { TabsModule } from 'primeng/tabs';
 import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { SelectButton } from 'primeng/selectbutton';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-club',
-  imports: [TabsModule, CommonModule, DividerModule],
+  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css'
 })
@@ -17,6 +21,20 @@ export class ClubComponent implements OnInit {
 
   club: Club | undefined;
   clubId!: number;
+  clubMembers : any;
+
+  selectedSize: string | undefined = "small";
+  selectedMemberRole = 'normal';
+  memberViewOptions = [
+    { label: 'Normal Members', value: 'normal' },
+    { label: 'Admins', value: 'admin' }
+  ];
+
+  sizes = [
+    { name: 'Small', value: 'small' },
+    { name: 'Normal', value: undefined },
+    { name: 'Large', value: 'large' }
+]
 
   constructor(
     private route: ActivatedRoute,
@@ -26,11 +44,14 @@ export class ClubComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.clubId = parseInt(this.route.snapshot.paramMap.get('clubId')!, 10);
-    this.loadClubInformation();
+    this.route.paramMap.subscribe(params => {
+      this.clubId = parseInt(params.get('clubId')!, 10);
+      this.loadClubInformation();
+    });
   }
 
   loadClubInformation(): void {
+
     this.clubApiService.getClub(this.clubId).subscribe({
       next: (club: Club) => {
         this.club = club;
@@ -44,5 +65,19 @@ export class ClubComponent implements OnInit {
         }
       }
     });
+
+    this.clubApiService.getClubMembers(this.clubId).subscribe({
+      next : (members) => this.clubMembers = members,
+      error : (err : Error) => this.toastService.showToast('error', 'Error', err.message)
+    });
+  }
+
+  test() {
+    console.log(this.clubMembers)
+  }
+
+  getDisplayedMembers() {
+    if (!this.clubMembers) return [];
+    return this.clubMembers[this.selectedMemberRole] || [];
   }
 }

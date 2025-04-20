@@ -26,13 +26,18 @@ export class PanelMenuComponent {
     },
     {
       label: 'Explore',
-      icon: 'pi pi-plus',
+      icon: 'pi pi-search',
       command: () => this._router.navigateByUrl('/explore')
     },
     {
       label: 'Clubs',
       icon: 'pi pi-graduation-cap',
-      items: this.clubList()
+      items: [
+        {
+          label: 'Create',
+          icon: 'pi pi-plus'
+        },
+        ...this.clubList()]
     },
     {
       label: 'Events',

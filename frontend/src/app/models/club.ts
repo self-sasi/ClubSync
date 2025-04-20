@@ -5,4 +5,5 @@ export interface Club {
   CreationDate : string;
   UniversityId : number;
   IsMember : number;
+  IsAdmin : boolean
 }

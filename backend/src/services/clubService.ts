@@ -1,3 +1,4 @@
+import { ResultSetHeader } from 'mysql2';
 import { pool } from '../config/database.js';
 
 export async function fetchAllClubs(userId: number) {
@@ -24,7 +25,7 @@ export async function fetchUserClubs(userId : number) {
 
 export async function fetchClub(clubId : number) {
     const [club] = await pool.query("SELECT * FROM Club WHERE ClubId = ? ;", clubId);
-    return club;
+    return club[0];
 }
 
 export async function fetchClubMembers(clubId : number) {
@@ -53,15 +54,91 @@ export async function fetchClubAnnouncementDiscussions(announcemendId : number) 
 }
 
 export async function registerUserInClub(userId: number, clubId: number) {
-    await pool.query(
+    const [result] = await pool.query<ResultSetHeader>(
         "INSERT INTO ClubMember (UserId, ClubId, DateJoined) VALUES (?, ?, CURDATE());",
         [userId, clubId]
     );
+
+    const memberId = result.insertId;
+
+    await pool.query(
+        "INSERT INTO ClubNormalMember (MemberId, ClubId) VALUES (?, ?);",
+        [memberId, clubId]
+    );
 }
 
+
+type MemberRow = { MemberId: number };
+
 export async function unRegisterUserInClub(userId: number, clubId: number) {
-    await pool.query(
-        "DELETE FROM ClubMember WHERE UserId = ? AND ClubId = ?;",
+    const [rows] = await pool.query(
+        "SELECT MemberId FROM ClubMember WHERE UserId = ? AND ClubId = ?;",
+        [userId, clubId]
+    ) as unknown as [MemberRow[]];
+
+    if (!rows.length) return;
+
+    const memberId = rows[0].MemberId;
+
+    await pool.query("DELETE FROM ClubNormalMember WHERE MemberId = ? AND ClubId = ?;", [memberId, clubId]);
+    await pool.query("DELETE FROM ClubMember WHERE MemberId = ?;", [memberId]);
+}
+
+export async function fetchClubUsers(clubId: number) {
+    const [users] = await pool.query(
+        `SELECT 
+            u.UserId,
+            u.FirstName,
+            u.LastName,
+            u.Email,
+            cm.MemberId,
+            cm.DateJoined,
+            CASE 
+                WHEN ca.MemberId IS NOT NULL THEN 'Admin'
+                WHEN cnm.MemberId IS NOT NULL THEN 'Normal'
+                ELSE 'Unknown'
+            END AS Role
+        FROM ClubMember cm
+        JOIN User u ON u.UserId = cm.UserId
+        LEFT JOIN ClubAdmin ca ON ca.MemberId = cm.MemberId AND ca.ClubId = ?
+        LEFT JOIN ClubNormalMember cnm ON cnm.MemberId = cm.MemberId AND cnm.ClubId = ?
+        WHERE cm.ClubId = ?;`,
+        [clubId, clubId, clubId]
+    );
+
+    return users;
+}
+
+export async function registerNewClub(userId: number, clubName: string, description: string) {
+    const [userRows] = await pool.query(
+        "SELECT UniversityId FROM User WHERE UserId = ?;",
+        [userId]
+    ) as unknown as [{ UniversityId: number }[]];
+
+    if (!userRows.length) {
+        throw new Error("User not found or university ID missing.");
+    }
+
+    const universityId = userRows[0].UniversityId;
+
+    const [clubResult] = await pool.query<ResultSetHeader>(
+        "INSERT INTO Club (ClubName, Description, CreationDate, UniversityId) VALUES (?, ?, CURDATE(), ?);",
+        [clubName, description, universityId]
+    );
+
+    const clubId = clubResult.insertId;
+
+    const [memberResult] = await pool.query<ResultSetHeader>(
+        "INSERT INTO ClubMember (UserId, ClubId, DateJoined) VALUES (?, ?, CURDATE());",
         [userId, clubId]
     );
+
+    const memberId = memberResult.insertId;
+
+    await pool.query(
+        "INSERT INTO ClubAdmin (MemberId, ClubId) VALUES (?, ?);",
+        [memberId, clubId]
+    );
+
+    return { clubId };
 }

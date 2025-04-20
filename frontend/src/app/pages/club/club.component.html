@@ -18,6 +18,12 @@
     </div>
 
   </div>
+  <div class="col-2">
+    @if (club?.IsMember) {
+      <p-button label="Edit Club" severity="info" icon="pi pi-user-edit" />
+    }
+    <p-button label="Leave" styleClass="w-full" severity="danger" icon="pi pi-times" />
+  </div>
 
   <div class="col-12">
     <p-tabs value="0">
@@ -38,14 +44,40 @@
               </p>
           </p-tabpanel>
           <p-tabpanel value="1">
-              <p class="m-0">
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-                  aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-                  Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
-                  dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius
-                  modi.
-              </p>
+            <div class="flex justify-center mb-4">
+              <p-selectbutton
+                [options]="memberViewOptions"
+                [(ngModel)]="selectedMemberRole"
+                optionLabel="label"
+                optionValue="value"
+              />
+            </div>
+
+            <p-table
+              [value]="getDisplayedMembers()"
+              [tableStyle]="{ 'min-width': '40rem' }"
+              [size]="selectedSize"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Name</th>
+                  <th>Date Joined</th>
+                  <th *ngIf="club?.IsAdmin">Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-member>
+                <tr>
+                  <td>{{ member.FirstName }} {{ member.LastName }}</td>
+                  <td>{{ member.DateJoined | date: 'mediumDate' }}</td>
+                  <td *ngIf="club?.IsAdmin">
+                    <!-- Admin-only actions, e.g., Promote/Demote -->
+                    <p-button icon="pi pi-user-minus" severity="danger" size="small" label="Remove" />
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
           </p-tabpanel>
+
           <p-tabpanel value="2">
               <p class="m-0">
                   At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
