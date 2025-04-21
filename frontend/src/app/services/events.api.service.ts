@@ -47,4 +47,21 @@ export class EventsApiService {
     );
   }
 
+  createEvent(eventData: { clubId: number; name: string; eventDate: string; location: string }) {
+    return this.http.post(`${this.baseUrl}/events/event/create`, eventData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Event Created', 'The event was created successfully.');
+        },
+        error: (err) => {
+          this.toastService.showToast(
+            'error',
+            'Event Creation Failed',
+            err.error?.message || err.message || 'Something went wrong while creating the event.'
+          );
+        }
+      })
+    );
+  }
+
 }

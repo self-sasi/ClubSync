@@ -11,10 +11,13 @@ import { TableModule } from 'primeng/table';
 import { SelectButton } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 import { EventsApiService } from '../../services/events.api.service';
+import { Dialog } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @Component({
   selector: 'app-club',
-  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule],
+  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css'
 })
@@ -36,7 +39,14 @@ export class ClubComponent implements OnInit {
     { name: 'Small', value: 'small' },
     { name: 'Normal', value: undefined },
     { name: 'Large', value: 'large' }
-]
+  ]
+
+  showCreateEventDialog = false;
+  newEvent = {
+    Name: '',
+    EventDate: '',
+    Location: '',
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -103,6 +113,22 @@ export class ClubComponent implements OnInit {
 
   openEventDialog(eventId: number) {
     this.router.navigate([{ outlets: { modal: ['event', eventId] } }]);
+  }
+
+  createEvent() {
+    if (!this.newEvent.Name.trim() || !this.newEvent.EventDate || !this.newEvent.Location.trim()) return;
+
+    this.eventsApiService.createEvent({
+      clubId: this.clubId,
+      name: this.newEvent.Name.trim(),
+      eventDate: this.newEvent.EventDate,
+      location: this.newEvent.Location.trim()
+    }).subscribe({
+      complete: () => {
+        this.showCreateEventDialog = false;
+        this.loadClubInformation();
+      }
+    });
   }
 
 }

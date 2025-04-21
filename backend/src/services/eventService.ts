@@ -34,9 +34,23 @@ export async function rsvpToEvent(userId: number, eventId: number) {
     );
   }
   
-  export async function cancelRsvpToEvent(userId: number, eventId: number) {
+export async function cancelRsvpToEvent(userId: number, eventId: number) {
     await pool.query(
-      'DELETE FROM RSVP WHERE UserId = ? AND EventId = ?;',
-      [userId, eventId]
+        'DELETE FROM RSVP WHERE UserId = ? AND EventId = ?;',
+        [userId, eventId]
+);
+}
+
+export async function createEvent(
+    clubId: number,
+    name: string,
+    eventDate: string,
+    location: string,
+    status: string = 'Scheduled'
+  ) {
+    await pool.query(
+      `INSERT INTO Event (ClubId, Name, EventDate, Location, Status)
+       VALUES (?, ?, ?, ?, ?);`,
+      [clubId, name, eventDate, location, status]
     );
-  }
+}

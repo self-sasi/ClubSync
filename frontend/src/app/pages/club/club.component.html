@@ -1,4 +1,4 @@
-<div class="grid px-4 row-gap-4">
+<div class="grid px-4 row-gap-4 column-gap-3">
 
   <div class="col-6 card surface-card border-round-xl">
     <span class="text-primary text-2xl">
@@ -19,10 +19,13 @@
 
   </div>
   <div class="col-2">
-    @if (club?.IsMember) {
-      <p-button label="Edit Club" severity="info" icon="pi pi-user-edit" />
-    }
-    <p-button label="Leave" styleClass="w-full" severity="danger" icon="pi pi-times" />
+    <div class="grid gap-4">
+      @if (club?.IsAdmin) {
+        <p-button label="Edit Club" severity="info" icon="pi pi-user-edit" />
+        <p-button label="Create Event" severity="success" icon="pi pi-plus" (click)="showCreateEventDialog = true" />
+      }
+      <p-button label="Leave" styleClass="w-full" severity="danger" icon="pi pi-times" />
+    </div>
   </div>
 
   <div class="col-12">
@@ -115,3 +118,39 @@
 
 </div>
 
+
+<p-dialog
+  header="Create New Event"
+  [(visible)]="showCreateEventDialog"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [maximizable]="true"
+  (onHide)="showCreateEventDialog = false"
+>
+  <div class="p-fluid">
+    <div class="mb-3 text-sm text-color-secondary">
+      Please enter accurate event details. Event creation is permanent.
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Event Name</label>
+      <input type="text" pInputText [(ngModel)]="newEvent.Name" placeholder="e.g. Hackathon 2025" />
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Date</label>
+      <input type="date" [(ngModel)]="newEvent.EventDate" class="p-inputtext p-component" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">Location</label>
+      <input type="text" pInputText [(ngModel)]="newEvent.Location" placeholder="e.g. Math Lecture Hall" />
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancel" class="p-button-text" (click)="showCreateEventDialog = false" />
+      <p-button label="Create" icon="pi pi-check" (click)="createEvent()" [disabled]="!newEvent.Name || !newEvent.EventDate || !newEvent.Location" />
+    </div>
+  </div>
+</p-dialog>
