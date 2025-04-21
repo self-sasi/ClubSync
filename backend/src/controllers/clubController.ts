@@ -88,32 +88,6 @@ export async function getClubEvents(req : AuthenticatedRequest, res : Response) 
     }
 }
 
-export async function getClubAnnouncements(req : Request, res : Response) {
-
-    const clubId = parseInt(req.params.clubId, 10);
-
-    try {
-        const announcements = await fetchClubAnnouncements(clubId);
-        res.status(200).json(announcements);
-    }
-    catch (err : any) {
-        res.status(404).json({ message : "announcements not found" })
-    }
-}
-
-export async function getClubAnnouncementDiscussions(req : Request, res : Response) {
-
-    const clubId = parseInt(req.params.clubId, 10);
-    const announcementId = parseInt(req.params.announcementId, 10);
-
-    try {
-        const discussions = await fetchClubAnnouncementDiscussions(announcementId);
-        res.status(200).json(discussions);
-    }
-    catch (err : any) {
-        res.status(404).json({ message : "announcement discussions not found"} );
-    }
-}
 
 export async function joinClub(req : AuthenticatedRequest, res : Response) {
 

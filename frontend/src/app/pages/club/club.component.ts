@@ -14,10 +14,11 @@ import { EventsApiService } from '../../services/events.api.service';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { AnnouncementsComponent } from "../../components/announcements/announcements.component";
 
 @Component({
   selector: 'app-club',
-  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule],
+  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule, AnnouncementsComponent],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css'
 })

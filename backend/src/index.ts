@@ -6,6 +6,7 @@ import profileRouter from './routers/profileRouter.js';
 import clubRouter from './routers/clubRouter.js';
 import cors from 'cors';
 import eventRouter from './routers/eventRouter.js';
+import announcementRouter from './routers/announcementRouter.js';
 
 const app = express();
 const PORT: number = 3000;
@@ -18,6 +19,7 @@ app.use('/api/uni', uniRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/clubs', clubRouter);
 app.use('/api/events', eventRouter);
+app.use('/api/announcements', announcementRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: "server is running" });
