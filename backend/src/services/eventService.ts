@@ -54,3 +54,46 @@ export async function createEvent(
       [clubId, name, eventDate, location, status]
     );
 }
+
+export async function fetchUserEvents(userId: number) {
+  const [events] = await pool.query(
+    `SELECT 
+       e.EventId,
+       e.Name,
+       e.Location,
+       e.EventDate,
+       e.Status,
+       e.ClubId,
+       c.ClubName
+     FROM Event e
+     JOIN Club c ON e.ClubId = c.ClubId
+     WHERE e.ClubId IN (
+       SELECT ClubId FROM ClubMember WHERE UserId = ?
+     )`,
+    [userId]
+  );
+  return events;
+}
+
+export async function getUserRSVPEvents(userId: number) {
+  const [rows] = await pool.query(
+    `
+    SELECT 
+      e.EventId,
+      e.Name,
+      e.EventDate,
+      e.Location,
+      e.Status,
+      c.ClubId,
+      c.ClubName
+    FROM RSVP r
+    JOIN Event e ON e.EventId = r.EventId
+    JOIN Club c ON c.ClubId = e.ClubId
+    WHERE r.UserId = ?;
+    `,
+    [userId]
+  );
+
+  return rows;
+}
+

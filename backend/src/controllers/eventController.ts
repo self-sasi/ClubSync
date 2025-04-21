@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 import { isUserClubAdmin, isUserInClub } from '../helpers/clubHelpers.js';
-import { cancelRsvpToEvent, createEvent, fetchEvent, rsvpToEvent } from '../services/eventService.js';
+import { cancelRsvpToEvent, createEvent, fetchEvent, fetchUserEvents, getUserRSVPEvents, rsvpToEvent } from '../services/eventService.js';
 
 export async function getEvent(req: AuthenticatedRequest, res: Response) {
     const userId = req.user?.userId;
@@ -97,3 +97,33 @@ export async function getEvent(req: AuthenticatedRequest, res: Response) {
       res.status(500).json({ message: 'Failed to create event', error: err.message });
     }
   }
+
+  export async function getUserEvents(req: AuthenticatedRequest, res: Response) {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+    }
+
+    try {
+        const events = await fetchUserEvents(userId);
+        res.status(200).json(events);
+    } catch (err: any) {
+        res.status(500).json({ message: "Could not fetch events", error: err.message });
+    }
+}
+
+export async function getUserRSVPEventsController(req: AuthenticatedRequest, res: Response) {
+  const userId = req.user?.userId;
+
+  if (!userId) {
+    return res.status(400).json({ message: "Missing userId" });
+  }
+
+  try {
+    const events = await getUserRSVPEvents(userId);
+    res.status(200).json(events);
+  } catch (err: any) {
+    res.status(500).json({ message: "Could not fetch RSVP'd events", error: err.message });
+  }
+}

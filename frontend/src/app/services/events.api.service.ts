@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ToastService } from './toast.service';
 
 @Injectable({
@@ -9,6 +9,9 @@ import { ToastService } from './toast.service';
 export class EventsApiService {
 
   private baseUrl = 'http://localhost:3000/api';
+
+  private _rsvpEvents = new BehaviorSubject<any[] | null>(null);
+  rsvpEvents$ = this._rsvpEvents.asObservable();
 
   constructor(private http: HttpClient,
               private toastService : ToastService) {}
@@ -26,6 +29,7 @@ export class EventsApiService {
       tap({
         next: () => {
           this.toastService.showToast('success', 'RSVP Confirmed', 'You have successfully RSVP’d for this event.');
+          this.fetchRSVPEvents();
         },
         error: (err) => {
           this.toastService.showToast('error', 'RSVP Failed', err.error?.message || err.message || 'An error occurred');
@@ -39,6 +43,7 @@ export class EventsApiService {
       tap({
         next: () => {
           this.toastService.showToast('info', 'RSVP Cancelled', 'You have successfully cancelled your RSVP.');
+          this.fetchRSVPEvents();
         },
         error: (err) => {
           this.toastService.showToast('error', 'Cancellation Failed', err.error?.message || err.message || 'An error occurred');
@@ -64,4 +69,17 @@ export class EventsApiService {
     );
   }
 
+  getUserEvents() {
+    return this.http.get<any[]>(`${this.baseUrl}/events/user-events`);
+  }
+
+  fetchRSVPEvents(): void {
+    this.http.get<any[]>(`${this.baseUrl}/events/rsvp`).subscribe({
+      next: (events) => this._rsvpEvents.next(events),
+      error: (err) => {
+        this.toastService.showToast('error', 'Error fetching RSVP events', err.message);
+        this._rsvpEvents.next([]);
+      }
+    });
+  }
 }

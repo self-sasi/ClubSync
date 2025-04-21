@@ -52,7 +52,7 @@ export class PanelMenuComponent {
         {
           label: 'Attending',
           icon: 'pi pi-list-check',
-          command: () => this._router.navigateByUrl('/events')
+          command: () => this._router.navigateByUrl('/events/rsvp')
         },
         {
           label: 'Calendar',

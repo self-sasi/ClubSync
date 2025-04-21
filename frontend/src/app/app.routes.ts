@@ -9,6 +9,8 @@ import { InboxComponent } from './pages/inbox/inbox.component';
 import { ExploreComponent } from './pages/explore/explore.component';
 import { CreateClubDialogComponent } from './components/create-club-dialog/create-club-dialog.component';
 import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
+import { AllEventsComponent } from './components/all-events/all-events.component';
+import { RSVPEventsComponent } from './components/rsvp-events/rsvp-events.component';
 
 export const routes: Routes = [
   {
@@ -35,7 +37,17 @@ export const routes: Routes = [
       },
       {
         path : 'events',
-        component : EventsComponent
+        component : EventsComponent,
+        children : [
+          {
+            path : '',
+            component : AllEventsComponent
+          },
+          {
+            path : 'rsvp',
+            component : RSVPEventsComponent
+          }
+        ]
       },
       {
         path : 'inbox',
