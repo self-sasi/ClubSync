@@ -69,9 +69,15 @@ export async function getClubMembers(req : AuthenticatedRequest, res : Response)
     }
 }
 
-export async function getClubEvents(req : Request, res : Response) {
+export async function getClubEvents(req : AuthenticatedRequest, res : Response) {
 
     const clubId = parseInt(req.params.clubId, 10);
+    const userId = req.user.userId;
+
+    const isMember = await isUserInClub(userId, clubId);
+    if (!isMember) {
+        return res.status(403).json({ message: "Access denied: not a member of this club" });
+    }
 
     try {
         const events = await fetchClubEvents(clubId);

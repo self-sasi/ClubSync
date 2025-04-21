@@ -1,0 +1,59 @@
+<p-dialog
+  header="Event Information"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [maximizable]="true"
+  (onHide)="closeDialog()"
+>
+  <div *ngIf="eventData; else loading" class="p-fluid">
+    <div class="text-2xl font-semibold text-primary mb-3">
+      {{ eventData.Name || 'Unnamed Event' }}
+    </div>
+
+    <div class="grid text-sm text-color-secondary mb-3">
+      <div class="col-12 md:col-6">
+        <span class="text-primary font-medium">Date:</span>
+        {{ eventData.EventDate | date: 'mediumDate' }}
+      </div>
+      <div class="col-12 md:col-6">
+        <span class="text-primary font-medium">Location:</span>
+        {{ eventData.Location }}
+      </div>
+      <div class="col-12 md:col-6">
+        <span class="text-primary font-medium">Status:</span>
+        {{ eventData.Status }}
+      </div>
+      <div class="col-12 md:col-6">
+        <span class="text-primary font-medium">Club ID:</span>
+        {{ eventData.ClubId }}
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button
+        *ngIf="eventData.IsRSVPed; else notRSVPed"
+        label="Cancel RSVP"
+        icon="pi pi-times"
+        severity="danger"
+        (click)="cancelRSVP()"
+      ></p-button>
+
+      <ng-template #notRSVPed>
+        <p-button
+          label="RSVP"
+          icon="pi pi-check"
+          severity="success"
+          (click)="rsvpToEvent()"
+        ></p-button>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center py-4 text-color-secondary">
+      Loading event details...
+    </div>
+  </ng-template>
+</p-dialog>

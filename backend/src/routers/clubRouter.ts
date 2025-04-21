@@ -8,7 +8,7 @@ clubRouter.get('/university', authenticateToken, getAllClubs);
 clubRouter.get('', authenticateToken, getUserClubs);
 clubRouter.get('/club/:clubId', authenticateToken, getClub);
 clubRouter.get('/club/:clubId/members', authenticateToken, getClubMembers);
-clubRouter.get('/club/:clubId/events', getClubEvents); 
+clubRouter.get('/club/:clubId/events', authenticateToken, getClubEvents); 
 clubRouter.get('/club/:clubId/announcements', getClubAnnouncements); 
 clubRouter.get('/club/:clubId/announcements/:announcementId', getClubAnnouncementDiscussions);
 clubRouter.post('/join', authenticateToken, joinClub);

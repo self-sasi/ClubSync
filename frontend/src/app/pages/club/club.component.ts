@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { SelectButton } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
+import { EventsApiService } from '../../services/events.api.service';
 
 @Component({
   selector: 'app-club',
@@ -22,6 +23,7 @@ export class ClubComponent implements OnInit {
   club: Club | undefined;
   clubId!: number;
   clubMembers : any;
+  clubEvents : any;
 
   selectedSize: "small" | "large" | undefined = "small";
   selectedMemberRole = 'normal';
@@ -40,7 +42,8 @@ export class ClubComponent implements OnInit {
     private route: ActivatedRoute,
     private clubApiService: ClubApiService,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private eventsApiService : EventsApiService
   ) {}
 
   ngOnInit(): void {
@@ -70,10 +73,15 @@ export class ClubComponent implements OnInit {
       next : (members) => this.clubMembers = members,
       error : (err : Error) => this.toastService.showToast('error', 'Error', err.message)
     });
+
+    this.eventsApiService.getClubEvents(this.clubId).subscribe({
+      next : (events) => this.clubEvents = events,
+      error : (err : Error) => this.toastService.showToast('error', 'Error', err.message)
+    })
   }
 
   test() {
-    console.log(this.clubMembers)
+    console.log(this.clubEvents)
   }
 
   getDisplayedMembers() {
@@ -92,4 +100,9 @@ export class ClubComponent implements OnInit {
       complete : () => this.loadClubInformation()
     });
   }
+
+  openEventDialog(eventId: number) {
+    this.router.navigate([{ outlets: { modal: ['event', eventId] } }]);
+  }
+
 }

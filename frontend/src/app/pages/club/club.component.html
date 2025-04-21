@@ -71,7 +71,6 @@
                   <td>{{ member.FirstName }} {{ member.LastName }}</td>
                   <td>{{ member.DateJoined | date: 'mediumDate' }}</td>
                   <td *ngIf="club?.IsAdmin && selectedMemberRole == 'normal'">
-                    <!-- Admin-only actions, e.g., Promote/Demote -->
                     <p-button icon="pi pi-user-minus" severity="danger" size="small" label="Remove" (click)="removeMember(member.MemberId)" />
                     <p-button icon="pi pi-verified" class="ml-4" severity="info" size="small" label="Promote" (click)="promoteMember(member.MemberId)"/>
                   </td>
@@ -81,13 +80,33 @@
           </p-tabpanel>
 
           <p-tabpanel value="2">
-              <p class="m-0">
-                  At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-                  atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-                  sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum
-                  facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
-                  impedit quo minus.
-              </p>
+              <div class="grid row-gap-3">
+                <div
+                  class="col-12 surface-card border-round-xl border-2 surface-border shadow-1 p-4 hover:border-primary smooth-transition cursor-pointer"
+                  *ngFor="let event of clubEvents"
+                  (click)="openEventDialog(event.EventId)"
+                >
+                  <div class="text-2xl text-primary font-semibold mb-2">
+                    <i class="pi pi-users text-2xl"></i> {{ event.Name }}
+                  </div>
+
+                  <div class="grid text-sm text-color-secondary">
+                    <div class="col-12 md:col-4">
+                      <span class="text-primary font-medium">Date:</span>
+                      {{ event.EventDate | date: 'mediumDate' }}
+                    </div>
+                    <div class="col-12 md:col-4">
+                      <span class="text-primary font-medium">Location:</span>
+                      {{ event.Location }}
+                    </div>
+                    <div class="col-12 md:col-4">
+                      <span class="text-primary font-medium">Status:</span>
+                      {{ event.Status }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
           </p-tabpanel>
       </p-tabpanels>
     </p-tabs>

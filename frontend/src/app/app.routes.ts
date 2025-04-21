@@ -8,6 +8,7 @@ import { EventsComponent } from './pages/events/events.component';
 import { InboxComponent } from './pages/inbox/inbox.component';
 import { ExploreComponent } from './pages/explore/explore.component';
 import { CreateClubDialogComponent } from './components/create-club-dialog/create-club-dialog.component';
+import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,11 @@ export const routes: Routes = [
       {
         path : 'inbox',
         component : InboxComponent
+      },
+      {
+        path: 'event/:eventId',
+        component: EventDialogComponent,
+        outlet: 'modal'
       }
     ]
   },
