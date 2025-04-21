@@ -1,2 +1,63 @@
-<p>announcements works!</p>
-<button (click)="test()">pressme</button>
+<div class="max-h-30rem overflow-scroll">
+  <p-accordion [multiple]="true">
+    <p-accordion-tab *ngFor="let announcement of announcements"
+                     [header]="'📣 ' + announcement.Event.Name + ' — ' + (announcement.Content | slice:0:60) + '...'">
+
+      <div class="mb-3 text-sm text-color-secondary pl-1">
+        <div class="mb-1"><strong>📆 Date:</strong> {{ announcement.Event.EventDate | date:'mediumDate' }}</div>
+        <div class="mb-1"><strong>📍 Location:</strong> {{ announcement.Event.Location }}</div>
+        <div><strong>🟢 Status:</strong> <span class="text-primary">{{ announcement.Event.Status }}</span></div>
+      </div>
+
+      <div class="mb-4 pl-1 text-base leading-6">
+        <strong class="text-primary block mb-1">📝 Announcement</strong>
+        <div class="bg-white-alpha-10 p-3 border-round-sm text-sm">{{ announcement.Content }}</div>
+      </div>
+
+      <p-accordion [multiple]="true" class="ml-1 mt-3">
+        <p-accordion-tab *ngFor="let channel of announcement.Channels"
+                         [header]="'💬 ' + channel.ChannelName + ' — ' + (channel.Description | slice:0:50) + '...'">
+
+          <div class="mb-3 pl-1 text-sm text-color-secondary italic">
+            {{ channel.Description }}
+          </div>
+
+          <p-inputGroup class="mb-3">
+            <input pInputText [(ngModel)]="newMessageContent[channel.ChannelId]" placeholder="Write a message..." />
+            <p-inputGroupAddon>
+              <p-button icon="pi pi-send" severity="primary" (click)="sendMessage(channel.ChannelId)" />
+            </p-inputGroupAddon>
+          </p-inputGroup>
+
+          <div *ngFor="let message of channel.Messages"
+               class="mb-4 p-3 border-left-3 border-primary ml-2 bg-black-alpha-10 border-round-sm">
+
+            <div class="mb-1 text-sm text-primary font-semibold">
+              {{ message.AuthorName }}
+              <span class="text-xs text-color-secondary ml-2">• {{ message.DatePosted | date:'medium' }}</span>
+            </div>
+
+            <div class="text-sm mb-2">
+              {{ message.Content }}
+            </div>
+
+            <div *ngFor="let comment of message.Comments"
+                 class="ml-3 mt-2 p-2 border-left-2 border-gray-400 border-round-xs bg-white-alpha-5">
+
+              <div class="mb-1 text-sm text-secondary font-medium">
+                {{ comment.AuthorName }}
+                <span class="text-xs text-color-secondary ml-2">• {{ comment.DatePosted | date:'shortDate' }}</span>
+              </div>
+              <div class="text-sm">
+                {{ comment.Content }}
+              </div>
+            </div>
+
+          </div>
+        </p-accordion-tab>
+      </p-accordion>
+
+    </p-accordion-tab>
+  </p-accordion>
+
+</div>
