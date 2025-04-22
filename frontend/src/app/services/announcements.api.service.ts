@@ -42,4 +42,34 @@ export class AnnouncementsApiService {
       })
     );
   }
+
+  createDiscussionChannel(channelData: { announcementId: number; channelName: string; description: string; clubId: number }) {
+    return this.http.post(`${this.baseUrl}/discussion/create`, channelData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Channel Created', 'Your discussion channel was successfully created.');
+          this.fetchAnnouncementDetails(channelData.clubId);
+        },
+        error: err => {
+          this.toastService.showToast('error', 'Failed to Create Channel', err.error?.message || err.message || 'Something went wrong.');
+        }
+      })
+    );
+  }
+
+  postMessage(messageData: { channelId: number; content: string; clubId: number }) {
+    return this.http.post(`${this.baseUrl}/discussion/message`, messageData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Message Sent', 'Your message was posted successfully.');
+          this.fetchAnnouncementDetails(messageData.clubId);
+        },
+        error: err => {
+          this.toastService.showToast('error', 'Failed to Post Message', err.error?.message || err.message || 'Something went wrong.');
+        }
+      })
+    );
+  }
+
+
 }

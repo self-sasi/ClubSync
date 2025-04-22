@@ -104,5 +104,22 @@ export async function createAnnouncement(clubId: number, eventId: number, conten
   );
 }
 
+export async function createDiscussionChannel(announcementId: number, channelName: string, description: string) {
+  await pool.query(
+    `INSERT INTO DiscussionChannel (AnnouncementId, ChannelName, Description)
+     VALUES (?, ?, ?)`,
+    [announcementId, channelName, description]
+  );
+}
+
+export async function postMessage(clubMemberId: number, channelId: number, content: string): Promise<void> {
+  await pool.query(
+    `INSERT INTO Message (ChannelId, ClubMemberId, Content, DatePosted)
+     VALUES (?, ?, ?, CURDATE())`,
+    [channelId, clubMemberId, content]
+  );
+}
+
+
 
   

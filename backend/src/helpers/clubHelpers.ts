@@ -21,3 +21,15 @@ export async function isUserClubAdmin(userId: number, clubId: number): Promise<b
     return Array.isArray(rows) && rows.length > 0;
 }
 
+export async function getClubMemberId(userId: number, clubId: number): Promise<number> {
+    const [rows]: any = await pool.query(
+      `SELECT MemberId FROM ClubMember WHERE UserId = ? AND ClubId = ?`,
+      [userId, clubId]
+    );
+  
+    if (rows.length === 0) {
+      throw new Error("User is not a member of this club");
+    }
+  
+    return rows[0].MemberId;
+  }

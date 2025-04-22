@@ -14,6 +14,9 @@
         <div class="bg-white-alpha-10 p-3 border-round-sm text-sm">{{ announcement.Content }}</div>
       </div>
 
+      <div class="flex w-full justify-content-end">
+        <p-button icon="pi pi-plus" class="ml-4" severity="warn" size="small" label="Create Channel" (click)="showChanelForm(announcement.AnnouncementId)" />
+      </div>
       <p-accordion [multiple]="true" class="ml-1 mt-3">
         <p-accordion-tab *ngFor="let channel of announcement.Channels"
                          [header]="'💬 ' + channel.ChannelName + ' — ' + (channel.Description | slice:0:50) + '...'">
@@ -61,3 +64,41 @@
   </p-accordion>
 
 </div>
+
+
+<p-dialog
+  header="Create Discussion Channel"
+  [(visible)]="showCreateChannelDialog"
+  [modal]="true"
+  [style]="{ width: '35rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [maximizable]="true"
+  (onHide)="resetChannelForm()"
+>
+  <div class="p-fluid">
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Channel Name</label>
+      <input type="text" pInputText [(ngModel)]="newChannel.ChannelName" placeholder="e.g. General Discussion" />
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Description</label>
+      <textarea pInputTextarea rows="3" [(ngModel)]="newChannel.Description" placeholder="What's this channel about?"></textarea>
+    </div>
+
+    <!-- You could optionally pass AnnouncementId as a hidden field if needed -->
+    <!-- <input type="hidden" [value]="announcementId"> -->
+
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancel" class="p-button-text" (click)="showCreateChannelDialog = false" />
+      <p-button
+        label="Create"
+        icon="pi pi-check"
+        (click)="createChannel()"
+        [disabled]="!newChannel.ChannelName || !newChannel.Description"
+      />
+    </div>
+
+  </div>
+</p-dialog>
