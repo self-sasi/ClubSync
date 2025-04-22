@@ -96,5 +96,13 @@ export async function fetchClubAnnouncements(clubId: number) {
   });
 }
 
+export async function createAnnouncement(clubId: number, eventId: number, content: string) {
+  await pool.query(
+    `INSERT INTO Announcement (ClubId, EventId, Content, DatePosted)
+     VALUES (?, ?, ?, CURDATE())`,
+    [clubId, eventId, content]
+  );
+}
+
 
   

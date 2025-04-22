@@ -15,10 +15,12 @@ import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { AnnouncementsComponent } from "../../components/announcements/announcements.component";
+import { AnnouncementsApiService } from '../../services/announcements.api.service';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-club',
-  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule, AnnouncementsComponent],
+  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule, AnnouncementsComponent, DropdownModule],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css'
 })
@@ -49,12 +51,17 @@ export class ClubComponent implements OnInit {
     Location: '',
   };
 
+  showCreateAnnouncementDialog = false;
+  selectedEventId: number | null = null;
+  newAnnouncementContent: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private clubApiService: ClubApiService,
     private toastService: ToastService,
     private router: Router,
-    private eventsApiService : EventsApiService
+    private eventsApiService : EventsApiService,
+    private announcementsApiService : AnnouncementsApiService
   ) {}
 
   ngOnInit(): void {
@@ -131,5 +138,26 @@ export class ClubComponent implements OnInit {
       }
     });
   }
+
+  postAnnouncement() {
+    if (!this.clubId || !this.selectedEventId || !this.newAnnouncementContent.trim()) return;
+
+    this.announcementsApiService.createAnnouncement({
+      clubId: this.clubId,
+      eventId: this.selectedEventId,
+      content: this.newAnnouncementContent.trim()
+    }).subscribe({
+      complete: () => {
+        this.resetAnnouncementForm();
+        this.showCreateAnnouncementDialog = false;
+      }
+    });
+  }
+
+  resetAnnouncementForm() {
+    this.selectedEventId = null;
+    this.newAnnouncementContent = '';
+  }
+
 
 }

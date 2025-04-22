@@ -29,7 +29,17 @@ export class AnnouncementsApiService {
     });
   }
 
-  refresh(clubId: number): void {
-    this.fetchAnnouncementDetails(clubId);
+  createAnnouncement(announcementData: { clubId: number; eventId: number; content: string }) {
+    return this.http.post(`${this.baseUrl}/create`, announcementData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Announcement Posted', 'Your announcement was successfully created.');
+          this.fetchAnnouncementDetails(announcementData.clubId);
+        },
+        error: err => {
+          this.toastService.showToast('error', 'Failed to Post', err.error?.message || err.message || 'Something went wrong.');
+        }
+      })
+    );
   }
 }
