@@ -3,7 +3,7 @@
     Discover Clubs at your University!
   </div>
   <div class="col-12">
-    <div class="grid column-gap-5 row-gap-5 justify-content-center">
+    <div class="grid column-gap-5 row-gap-5 justify-content-center overflow-scroll" style="height: 50rem;">
 
       @for (club of clubs; track $index) {
         <div class="card bg-white-alpha-10 surface-border border-1 border-round-lg hover:bg-white-alpha-20 cursor-pointer col-3 justify smooth-transition h-18rem" (click)="test()">
