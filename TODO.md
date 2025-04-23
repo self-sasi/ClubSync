@@ -27,3 +27,7 @@
 ### database edit
 `description` : in the database only 1 discussion channel is allowed per announcement, which shouldnt happen. remake database with changes. 
 `priority` : super high
+
+### database computed member count
+`description` : member count required for clubs in db
+`priority` : super high

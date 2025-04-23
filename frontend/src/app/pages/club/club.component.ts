@@ -135,6 +135,11 @@ export class ClubComponent implements OnInit {
       complete: () => {
         this.showCreateEventDialog = false;
         this.loadClubInformation();
+        this.newEvent = {
+          Name: '',
+          EventDate: '',
+          Location: '',
+        };
       }
     });
   }
@@ -157,6 +162,15 @@ export class ClubComponent implements OnInit {
   resetAnnouncementForm() {
     this.selectedEventId = null;
     this.newAnnouncementContent = '';
+  }
+
+  leaveClub() {
+    this.clubApiService.leaveClub(this.clubId).subscribe({
+      complete : () => {
+        this.toastService.showToast('warn', 'Club left', `You have exited ${this.club?.ClubName} successfully.`);
+        this.router.navigateByUrl('/explore');
+      }
+    })
   }
 
 
