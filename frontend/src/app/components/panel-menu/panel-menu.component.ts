@@ -54,18 +54,18 @@ export class PanelMenuComponent {
           icon: 'pi pi-list-check',
           command: () => this._router.navigateByUrl('/events/rsvp')
         },
-        {
-          label: 'Calendar',
-          icon: 'pi pi-calendar',
-          command: () => this._router.navigateByUrl('/events')
-        }
+        // {
+        //   label: 'Calendar',
+        //   icon: 'pi pi-calendar',
+        //   command: () => this._router.navigateByUrl('/events')
+        // }
       ]
     },
-    {
-      label: 'Inbox',
-      icon: 'pi pi-inbox',
-      command: () => this._router.navigateByUrl('/inbox')
-    }
+    // {
+    //   label: 'Inbox',
+    //   icon: 'pi pi-inbox',
+    //   command: () => this._router.navigateByUrl('/inbox')
+    // }
   ]);
 
   constructor() {

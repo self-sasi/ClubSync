@@ -86,8 +86,24 @@ export async function unRegisterUserInClub(userId: number, clubId: number) {
     ) as unknown as [MemberRow[]];
   
     if (!rows.length) return;
-  
     const memberId = rows[0].MemberId;
+  
+    const [messageRows] = await pool.query(
+      "SELECT MessageId FROM Message WHERE ClubMemberId = ?;",
+      [memberId]
+    ) as any;
+  
+    const messageIds = messageRows.map((row: any) => row.MessageId);
+  
+    if (messageIds.length > 0) {
+      const placeholders = messageIds.map(() => '?').join(',');
+      await pool.query(
+        `DELETE FROM Comment WHERE MessageId IN (${placeholders});`,
+        [...messageIds]
+      );
+    }
+  
+    await pool.query("DELETE FROM Message WHERE ClubMemberId = ?;", [memberId]);
   
     const [eventRows] = await pool.query(
       "SELECT EventId FROM Event WHERE ClubId = ?;",
@@ -97,16 +113,19 @@ export async function unRegisterUserInClub(userId: number, clubId: number) {
     const eventIds = eventRows.map((row: any) => row.EventId);
   
     if (eventIds.length > 0) {
+      const placeholders = eventIds.map(() => '?').join(',');
       await pool.query(
-        `DELETE FROM Manages WHERE MemberId = ? AND EventId IN (?);`,
-        [memberId, eventIds]
+        `DELETE FROM Manages WHERE MemberId = ? AND EventId IN (${placeholders});`,
+        [memberId, ...eventIds]
       );
     }
   
     await pool.query("DELETE FROM ClubNormalMember WHERE MemberId = ? AND ClubId = ?;", [memberId, clubId]);
     await pool.query("DELETE FROM ClubAdmin WHERE MemberId = ? AND ClubId = ?;", [memberId, clubId]);
+  
     await pool.query("DELETE FROM ClubMember WHERE MemberId = ?;", [memberId]);
   }
+  
 
 export async function fetchClubUsers(clubId: number) {
     const [users] = await pool.query(
