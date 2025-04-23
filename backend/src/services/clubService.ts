@@ -23,10 +23,19 @@ export async function fetchUserClubs(userId : number) {
     return clubs;
 }
 
-export async function fetchClub(clubId : number) {
-    const [club] = await pool.query("SELECT * FROM Club WHERE ClubId = ? ;", clubId);
-    return club[0];
+export async function fetchClub(clubId: number) {
+    const [rows] = await pool.query(
+        `SELECT 
+           c.*, 
+           (SELECT COUNT(*) FROM ClubMember cm WHERE cm.ClubId = c.ClubId) AS MemberCount
+         FROM Club c
+         WHERE c.ClubId = ?;`,
+        [clubId]
+    );
+
+    return rows[0];
 }
+
 
 export async function fetchClubMembers(clubId : number) {
     const [normalMembers] = await pool.query("SELECT User.FirstName, User.LastName, ClubMember.MemberId, ClubMember.DateJoined FROM ClubMember JOIN User ON User.UserId = ClubMember.UserId WHERE ClubMember.MemberId IN (SELECT MemberId FROM ClubNormalMember WHERE ClubNormalMember.ClubId = ?);", clubId);

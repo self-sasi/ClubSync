@@ -92,7 +92,7 @@ CREATE TABLE Announcement (
 -- discussion channel has channelId as primary key, announcement Id as foreign key as discussions channels are about an announcement. 
 CREATE TABLE DiscussionChannel (
     ChannelId INT PRIMARY KEY AUTO_INCREMENT,
-    AnnouncementId INT NOT NULL UNIQUE,
+    AnnouncementId INT NOT NULL,
     ChannelName VARCHAR(255) NOT NULL,
     Description TEXT,
     FOREIGN KEY (AnnouncementId) REFERENCES Announcement(AnnouncementId)
