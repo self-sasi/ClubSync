@@ -71,5 +71,18 @@ export class AnnouncementsApiService {
     );
   }
 
+  postComment(commentData: { messageId: number; content: string; clubId: number }) {
+    return this.http.post(`${this.baseUrl}/discussion/comment`, commentData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Comment Posted', 'Your comment was added successfully.');
+          this.fetchAnnouncementDetails(commentData.clubId);
+        },
+        error: err => {
+          this.toastService.showToast('error', 'Failed to Post Comment', err.error?.message || err.message || 'Something went wrong.');
+        }
+      })
+    );
+  }
 
 }

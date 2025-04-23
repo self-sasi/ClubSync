@@ -40,9 +40,13 @@
               <span class="text-xs text-color-secondary ml-2">• {{ message.DatePosted | date:'medium' }}</span>
             </div>
 
-            <div class="text-sm mb-2">
-              {{ message.Content }}
+            <div class="text-sm mb-2 flex justify-content-between">
+
+              <span>{{ message.Content }}</span>
+              <p-button icon="pi pi-reply" severity="info" (click)="openCommentDialog(message.MessageId, message.Content)" />
             </div>
+
+
 
             <div *ngFor="let comment of message.Comments"
                  class="ml-3 mt-2 p-2 border-left-2 border-gray-400 border-round-xs bg-white-alpha-5">
@@ -102,3 +106,45 @@
 
   </div>
 </p-dialog>
+
+<!-- Comment Dialog -->
+<p-dialog
+  header="Reply to Message"
+  [(visible)]="showCommentDialog"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  [closable]="true"
+  (onHide)="resetCommentDialog()"
+>
+  <div class="p-fluid">
+
+    <div class="mb-3 text-sm text-color-secondary">
+      Replying to:
+      <div class="mt-1 p-2 border-round bg-white-alpha-10 text-sm text-primary font-medium">
+        {{ selectedMessageContent }}
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Your Comment</label>
+      <textarea
+        pInputTextarea
+        rows="4"
+        [(ngModel)]="newCommentText"
+        placeholder="Write your reply here..."
+      ></textarea>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancel" class="p-button-text" (click)="resetCommentDialog()" />
+      <p-button
+        label="Post"
+        icon="pi pi-check"
+        [disabled]="!newCommentText.trim()"
+        (click)="submitComment()"
+      />
+    </div>
+
+  </div>
+</p-dialog>
+

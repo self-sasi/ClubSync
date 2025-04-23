@@ -120,6 +120,14 @@ export async function postMessage(clubMemberId: number, channelId: number, conte
   );
 }
 
+export async function addComment(clubMemberId: number, messageId: number, content: string): Promise<void> {
+  await pool.query(
+    `INSERT INTO Comment (MessageId, ClubMemberId, Content, DatePosted)
+     VALUES (?, ?, ?, CURDATE())`,
+    [messageId, clubMemberId, content]
+  );
+}
+
 
 
   

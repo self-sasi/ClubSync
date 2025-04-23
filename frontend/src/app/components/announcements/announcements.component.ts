@@ -38,6 +38,11 @@ export class AnnouncementsComponent implements OnChanges {
 
   announcementId: number | undefined;
 
+  showCommentDialog: boolean = false;
+  selectedMessageId: number | null = null;
+  selectedMessageContent: string = '';
+  newCommentText: string = '';
+
   constructor(private announcementsApiService: AnnouncementsApiService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -109,6 +114,33 @@ export class AnnouncementsComponent implements OnChanges {
       // Call service here...
       this.newCommentContent[messageId] = '';
     }
+  }
+
+  openCommentDialog(messageId: number, content: string) {
+    this.selectedMessageId = messageId;
+    this.selectedMessageContent = content;
+    this.showCommentDialog = true;
+  }
+
+  resetCommentDialog() {
+    this.showCommentDialog = false;
+    this.selectedMessageId = null;
+    this.selectedMessageContent = '';
+    this.newCommentText = '';
+  }
+
+  submitComment() {
+    if (!this.clubId || !this.selectedMessageId || !this.newCommentText.trim()) return;
+
+    this.announcementsApiService.postComment({
+      messageId: this.selectedMessageId,
+      content: this.newCommentText.trim(),
+      clubId: this.clubId
+    }).subscribe({
+      complete: () => {
+        this.resetCommentDialog();
+      }
+    });
   }
 
 }

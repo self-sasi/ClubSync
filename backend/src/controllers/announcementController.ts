@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 import { getClubMemberId, isUserClubAdmin, isUserInClub } from '../helpers/clubHelpers.js';
-import { createAnnouncement, createDiscussionChannel, fetchClubAnnouncements, postMessage } from '../services/announcementService.js';
+import { addComment, createAnnouncement, createDiscussionChannel, fetchClubAnnouncements, postMessage } from '../services/announcementService.js';
 
 export async function getClubAnnouncements(req: AuthenticatedRequest, res: Response) {
   const userId = req.user?.userId;
@@ -92,5 +92,29 @@ export async function postMessageController(req: AuthenticatedRequest, res: Resp
 
   } catch (err: any) {
     res.status(500).json({ message: 'Failed to post message', error: err.message });
+  }
+}
+
+export async function postCommentController(req: AuthenticatedRequest, res: Response) {
+  const userId = req.user?.userId;
+  const { clubId, messageId, content } = req.body;
+
+  if (!userId || !clubId || !messageId || !content?.trim()) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+    const isMember = await isUserInClub(userId, clubId);
+    if (!isMember) {
+      return res.status(403).json({ message: 'You are not a member of this club' });
+    }
+
+    const clubMemberId = await getClubMemberId(userId, clubId);
+    await addComment(clubMemberId, messageId, content.trim());
+
+    res.status(201).json({ message: 'Comment posted successfully' });
+
+  } catch (err: any) {
+    res.status(500).json({ message: 'Failed to post comment', error: err.message });
   }
 }
