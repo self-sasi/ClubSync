@@ -72,17 +72,32 @@ type MemberRow = { MemberId: number };
 
 export async function unRegisterUserInClub(userId: number, clubId: number) {
     const [rows] = await pool.query(
-        "SELECT MemberId FROM ClubMember WHERE UserId = ? AND ClubId = ?;",
-        [userId, clubId]
+      "SELECT MemberId FROM ClubMember WHERE UserId = ? AND ClubId = ?;",
+      [userId, clubId]
     ) as unknown as [MemberRow[]];
-
+  
     if (!rows.length) return;
-
+  
     const memberId = rows[0].MemberId;
-
+  
+    const [eventRows] = await pool.query(
+      "SELECT EventId FROM Event WHERE ClubId = ?;",
+      [clubId]
+    ) as any;
+  
+    const eventIds = eventRows.map((row: any) => row.EventId);
+  
+    if (eventIds.length > 0) {
+      await pool.query(
+        `DELETE FROM Manages WHERE MemberId = ? AND EventId IN (?);`,
+        [memberId, eventIds]
+      );
+    }
+  
     await pool.query("DELETE FROM ClubNormalMember WHERE MemberId = ? AND ClubId = ?;", [memberId, clubId]);
+    await pool.query("DELETE FROM ClubAdmin WHERE MemberId = ? AND ClubId = ?;", [memberId, clubId]);
     await pool.query("DELETE FROM ClubMember WHERE MemberId = ?;", [memberId]);
-}
+  }
 
 export async function fetchClubUsers(clubId: number) {
     const [users] = await pool.query(
