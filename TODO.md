@@ -29,5 +29,5 @@
 `priority` : super high
 
 ### database computed member count
-`description` : member count required for clubs in db
+`description` : member count required for clubs in dbg
 `priority` : super high

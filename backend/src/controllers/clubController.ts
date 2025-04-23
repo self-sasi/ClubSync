@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs, promoteMemberToAdmin, registerNewClub, registerUserInClub, removeMember, unRegisterUserInClub } from '../services/clubService.js';
+import { fetchAllClubs, fetchClub, fetchClubAnnouncementDiscussions, fetchClubAnnouncements, fetchClubEvents, fetchClubMembers, fetchUserClubs, promoteMemberToAdmin, registerNewClub, registerUserInClub, removeMember, unRegisterUserInClub, updateClubDetails } from '../services/clubService.js';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 import { isUserClubAdmin, isUserInClub } from '../helpers/clubHelpers.js';
 
@@ -188,6 +188,33 @@ export async function makeClubAdmin(req: AuthenticatedRequest, res: Response) {
       res.status(200).json({ message: "Member promoted to admin" });
     } catch (err: any) {
       res.status(500).json({ message: "Failed to promote member", error: err.message });
+    }
+  }
+
+  export async function updateClubHandler(req: AuthenticatedRequest, res: Response) {
+    const userId = req.user?.userId;
+    const clubId = parseInt(req.params.clubId, 10);
+    const { ClubName, Description } = req.body;
+  
+    if (!userId || isNaN(clubId) || !ClubName?.trim() || !Description?.trim()) {
+      return res.status(400).json({ message: 'Missing or invalid fields' });
+    }
+  
+    try {
+      const isMember = await isUserInClub(userId, clubId);
+      if (!isMember) {
+        return res.status(403).json({ message: 'You are not a member of this club' });
+      }
+  
+      const isAdmin = await isUserClubAdmin(userId, clubId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: 'Only club admins can update the club' });
+      }
+  
+      await updateClubDetails(clubId, ClubName.trim(), Description.trim());
+      res.status(204).send(); // No content
+    } catch (err: any) {
+      res.status(500).json({ message: 'Failed to update club', error: err.message });
     }
   }
   

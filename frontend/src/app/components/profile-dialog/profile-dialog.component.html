@@ -61,6 +61,69 @@
 
   } @else if(passwordChangeMode) {
 
+    <div class="grid justify-content-center align-items-center">
+      <div class="col-12 text-xl text-primary">
+        Change Your Password
+      </div>
+
+      <div class="col-12 px-3">
+        <p-divider />
+      </div>
+
+      <div class="col-12">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-lock"></i>
+          </p-inputgroup-addon>
+          <input
+            pInputText
+            type="password"
+            [(ngModel)]="passwordSet.old"
+            placeholder="Current Password"
+          />
+        </p-inputgroup>
+      </div>
+
+      <div class="col-12">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-key"></i>
+          </p-inputgroup-addon>
+          <input
+            pInputText
+            type="password"
+            [(ngModel)]="passwordSet.new"
+            placeholder="New Password"
+          />
+        </p-inputgroup>
+      </div>
+
+      <div class="col-12 px-3">
+        <p-divider />
+      </div>
+
+      <div class="col-12">
+        <div class="flex gap-3">
+          <p-button
+            (click)="submitPasswordChange()"
+            label="Change Password"
+            variant="outlined"
+            severity="success"
+            icon="pi pi-check-circle"
+            [disabled]="!passwordSet.old || !passwordSet.new"
+          />
+          <p-button
+            (click)="exitPasswordChangeMode()"
+            label="Cancel"
+            variant="outlined"
+            severity="danger"
+            icon="pi pi-times"
+          />
+        </div>
+      </div>
+    </div>
+
+
   } @else {
     <div class="grid row-gap-2">
       <div class="col-4">

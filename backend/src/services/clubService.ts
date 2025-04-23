@@ -160,3 +160,10 @@ await pool.query(
     [targetMemberId, clubId]
 );
 }
+
+export async function updateClubDetails(clubId: number, clubName: string, description: string) {
+    await pool.query(
+      `UPDATE Club SET ClubName = ?, Description = ? WHERE ClubId = ?`,
+      [clubName, description, clubId]
+    );
+  }

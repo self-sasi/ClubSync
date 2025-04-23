@@ -1,7 +1,7 @@
 <div class="px-5">
   <h2 class="text-3xl text-primary mb-4">All Upcoming Events</h2>
 
-  <div class="grid row-gap-4 column-gap-3">
+  <div class="grid row-gap-4 column-gap-3 overflow-scroll" style="height: 50rem;">
     <div
       class="col-12 surface-card border-round-xl border-2 surface-border shadow-1 p-4 hover:border-primary smooth-transition cursor-pointer"
       *ngFor="let event of userEvents"

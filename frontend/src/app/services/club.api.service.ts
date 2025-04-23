@@ -123,4 +123,20 @@ export class ClubApiService {
     );
   }
 
+  updateClub(clubId: number, updateData: { ClubName: string; Description: string }) {
+    return this.http.put(`http://localhost:3000/api/clubs/${clubId}`, updateData).pipe(
+      tap({
+        next: () => {
+          this.toastService.showToast('success', 'Club Updated', 'The club was successfully updated.');
+          this.getClubs().subscribe();
+          this.getUserClubs().subscribe();
+        },
+        error: (err) => {
+          this.toastService.showToast('error', 'Update Failed', err.error?.message || err.message);
+        }
+      })
+    );
+  }
+
+
 }

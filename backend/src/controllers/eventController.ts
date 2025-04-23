@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthenticatedRequest } from '../types/authenticatedRequest.js';
 import { isUserClubAdmin, isUserInClub } from '../helpers/clubHelpers.js';
-import { cancelRsvpToEvent, createEvent, fetchEvent, fetchUserEvents, getUserRSVPEvents, rsvpToEvent } from '../services/eventService.js';
+import { assignEventManagers, cancelRsvpToEvent, createEvent, fetchEvent, fetchUserEvents, getUserRSVPEvents, rsvpToEvent } from '../services/eventService.js';
 
 export async function getEvent(req: AuthenticatedRequest, res: Response) {
     const userId = req.user?.userId;
@@ -79,7 +79,7 @@ export async function getEvent(req: AuthenticatedRequest, res: Response) {
 
   export async function createEventHandler(req: AuthenticatedRequest, res: Response) {
     const userId = req.user?.userId;
-    const { clubId, name, eventDate, location } = req.body;
+    const { clubId, name, eventDate, location, managerIds } = req.body;
   
     if (!userId || !clubId || !name || !eventDate || !location) {
       return res.status(400).json({ message: 'Missing required event fields' });
@@ -91,12 +91,18 @@ export async function getEvent(req: AuthenticatedRequest, res: Response) {
         return res.status(403).json({ message: 'Access denied: not a member of this club' });
       }
   
-      await createEvent(clubId, name, eventDate, location);
+      const eventId = await createEvent(clubId, name, eventDate, location);
+  
+      if (Array.isArray(managerIds)) {
+        await assignEventManagers(eventId, managerIds);
+      }
+  
       res.status(201).json({ message: 'Event created successfully' });
     } catch (err: any) {
       res.status(500).json({ message: 'Failed to create event', error: err.message });
     }
   }
+  
 
   export async function getUserEvents(req: AuthenticatedRequest, res: Response) {
     const userId = req.user?.userId;

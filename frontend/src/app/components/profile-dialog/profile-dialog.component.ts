@@ -34,6 +34,11 @@ export class ProfileDialogComponent implements OnInit {
   user : User | undefined = undefined;
   userUniversity : University | undefined = undefined;
 
+  passwordSet = {
+    old: '',
+    new: ''
+  };
+
   constructor(private universityApiService : UniversityApiService,
               private authApiService : AuthApiService,
               private toastService : ToastService) {}
@@ -92,4 +97,29 @@ export class ProfileDialogComponent implements OnInit {
       complete : () => this.exitEditMode()
     })
   }
+
+  submitPasswordChange() {
+    if (!this.user) {
+      this.toastService.showToast('error', 'User Not Found', 'Please login again.');
+      return;
+    }
+
+    const payload = {
+      old: this.passwordSet.old.trim(),
+      new: this.passwordSet.new.trim()
+    };
+
+    if (!payload.old || !payload.new) {
+      this.toastService.showToast('warn', 'Missing Fields', 'Both fields are required.');
+      return;
+    }
+
+    this.authApiService.changePassword(payload).subscribe({
+      complete: () => {
+        this.exitPasswordChangeMode();
+        this.passwordSet = { old: '', new: '' };
+      }
+    });
+  }
+
 }

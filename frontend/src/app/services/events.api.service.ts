@@ -52,7 +52,7 @@ export class EventsApiService {
     );
   }
 
-  createEvent(eventData: { clubId: number; name: string; eventDate: string; location: string }) {
+  createEvent(eventData: { clubId: number; name: string; eventDate: string; location: string; managerIds?: number[] }) {
     return this.http.post(`${this.baseUrl}/events/event/create`, eventData).pipe(
       tap({
         next: () => {
@@ -68,6 +68,7 @@ export class EventsApiService {
       })
     );
   }
+
 
   getUserEvents() {
     return this.http.get<any[]>(`${this.baseUrl}/events/user-events`);

@@ -10,22 +10,40 @@ interface EventWithRSVP extends RowDataPacket {
     Status: string;
     IsRSVPed: number;
   }
+
   
-export async function fetchEvent(eventId: number, userId: number): Promise<EventWithRSVP | null> {
-    const [rows] = await pool.query<EventWithRSVP[]>(
-        `
-        SELECT 
+  export async function fetchEvent(eventId: number, userId: number) {
+    const [rows] = await pool.query<RowDataPacket[]>(
+      `SELECT 
         e.*, 
         r.UserId IS NOT NULL AS IsRSVPed
-        FROM Event e
-        LEFT JOIN RSVP r ON r.EventId = e.EventId AND r.UserId = ?
-        WHERE e.EventId = ?
-        `,
-    [userId, eventId]
-);
-
-return rows.length > 0 ? rows[0] : null;
-}
+       FROM Event e
+       LEFT JOIN RSVP r ON r.EventId = e.EventId AND r.UserId = ?
+       WHERE e.EventId = ?`,
+      [userId, eventId]
+    );
+  
+    if (rows.length === 0) return null;
+  
+    const event = rows[0] as EventWithRSVP;
+  
+    const [managerRows] = await pool.query<RowDataPacket[]>(
+      `SELECT CONCAT(u.FirstName, ' ', u.LastName) AS ManagerName
+       FROM Manages m
+       JOIN ClubMember cm ON m.MemberId = cm.MemberId
+       JOIN User u ON u.UserId = cm.UserId
+       WHERE m.EventId = ?`,
+      [eventId]
+    );
+  
+    const managers = managerRows.map(row => (row as any).ManagerName);
+  
+    return {
+      ...event,
+      Managers: managers
+    };
+  }
+  
 
 export async function rsvpToEvent(userId: number, eventId: number) {
     await pool.query(
@@ -42,18 +60,33 @@ export async function cancelRsvpToEvent(userId: number, eventId: number) {
 }
 
 export async function createEvent(
-    clubId: number,
-    name: string,
-    eventDate: string,
-    location: string,
-    status: string = 'Scheduled'
-  ) {
-    await pool.query(
-      `INSERT INTO Event (ClubId, Name, EventDate, Location, Status)
-       VALUES (?, ?, ?, ?, ?);`,
-      [clubId, name, eventDate, location, status]
-    );
+  clubId: number,
+  name: string,
+  eventDate: string,
+  location: string,
+  status: string = 'Scheduled'
+): Promise<number> {
+  const [result]: any = await pool.query(
+    `INSERT INTO Event (ClubId, Name, EventDate, Location, Status)
+     VALUES (?, ?, ?, ?, ?)`,
+    [clubId, name, eventDate, location, status]
+  );
+
+  return result.insertId; 
 }
+
+export async function assignEventManagers(eventId: number, memberIds: number[]) {
+  if (!Array.isArray(memberIds)) return;
+
+  const insertValues = memberIds.map(memberId => [memberId, eventId]);
+
+  await pool.query(
+    `INSERT INTO Manages (MemberId, EventId)
+     VALUES ?`,
+    [insertValues]
+  );
+}
+
 
 export async function fetchUserEvents(userId: number) {
   const [events] = await pool.query(

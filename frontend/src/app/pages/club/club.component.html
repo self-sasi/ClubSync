@@ -21,7 +21,7 @@
   <div class="col-2">
     <div class="grid gap-4">
       @if (club?.IsAdmin) {
-        <p-button label="Edit Club" severity="info" icon="pi pi-user-edit" />
+        <p-button label="Edit Club" severity="info" icon="pi pi-user-edit" (click)="openEditClubDialog()" />
         <p-button label="Create Event" severity="success" icon="pi pi-plus" (click)="showCreateEventDialog = true" />
       }
       <p-button label="Leave" styleClass="w-full" severity="danger" icon="pi pi-times" (click)="leaveClub()" />
@@ -141,17 +141,35 @@
       <input type="date" [(ngModel)]="newEvent.EventDate" class="p-inputtext p-component" />
     </div>
 
-    <div class="mb-4">
+    <div class="mb-3">
       <label class="block text-sm font-medium mb-1">Location</label>
       <input type="text" pInputText [(ngModel)]="newEvent.Location" placeholder="e.g. Math Lecture Hall" />
     </div>
 
-    <div class="flex justify-end gap-2">
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Assign Event Managers</label>
+      <p-multiSelect
+        [options]="clubMembers?.admin || []"
+        [(ngModel)]="newEvent.ManagerIds"
+        optionLabel="FirstName"
+        optionValue="MemberId"
+        display="chip"
+        placeholder="Select admins to manage event">
+      </p-multiSelect>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-3">
       <p-button label="Cancel" class="p-button-text" (click)="showCreateEventDialog = false" />
-      <p-button label="Create" icon="pi pi-check" (click)="createEvent()" [disabled]="!newEvent.Name || !newEvent.EventDate || !newEvent.Location" />
+      <p-button
+        label="Create"
+        icon="pi pi-check"
+        (click)="createEvent()"
+        [disabled]="!newEvent.Name || !newEvent.EventDate || !newEvent.Location"
+      />
     </div>
   </div>
 </p-dialog>
+
 
 <p-dialog
   header="Create New Announcement"
@@ -204,3 +222,32 @@
   </div>
 </p-dialog>
 
+<p-dialog
+  header="Edit Club"
+  [(visible)]="showEditClubDialog"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="resetEditClubForm()"
+>
+  <div class="p-fluid">
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Club Name</label>
+      <input type="text" pInputText [(ngModel)]="editClubData.ClubName" placeholder="e.g. AI Enthusiasts" />
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium mb-1">Description</label>
+      <textarea rows="3" pInputTextarea [(ngModel)]="editClubData.Description" placeholder="Describe the club..."></textarea>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-3">
+      <p-button label="Cancel" class="p-button-text" (click)="showEditClubDialog = false" />
+      <p-button label="Save" icon="pi pi-check" (click)="submitClubEdit()" [disabled]="!editClubData.ClubName.trim() || !editClubData.Description.trim()" />
+    </div>
+
+  </div>
+</p-dialog>

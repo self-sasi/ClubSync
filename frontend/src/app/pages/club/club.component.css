@@ -1,0 +1,11 @@
+::ng-deep .p-dialog {
+  overflow: visible !important;
+}
+
+::ng-deep .p-dialog-content {
+  overflow: visible !important;
+}
+
+::ng-deep .p-multiselect-panel {
+  z-index: 1100 !important;
+}

@@ -17,10 +17,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { AnnouncementsComponent } from "../../components/announcements/announcements.component";
 import { AnnouncementsApiService } from '../../services/announcements.api.service';
 import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-club',
-  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule, AnnouncementsComponent, DropdownModule],
+  imports: [TabsModule, CommonModule, DividerModule, ButtonModule, TableModule, SelectButton, FormsModule, Dialog, InputTextModule, SelectButtonModule, AnnouncementsComponent, DropdownModule, MultiSelectModule],
   templateUrl: './club.component.html',
   styleUrl: './club.component.css'
 })
@@ -49,11 +50,19 @@ export class ClubComponent implements OnInit {
     Name: '',
     EventDate: '',
     Location: '',
+    ManagerIds: [] as number[]
   };
+
 
   showCreateAnnouncementDialog = false;
   selectedEventId: number | null = null;
   newAnnouncementContent: string = '';
+
+  showEditClubDialog = false;
+  editClubData = {
+    ClubName: '',
+    Description: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -130,7 +139,8 @@ export class ClubComponent implements OnInit {
       clubId: this.clubId,
       name: this.newEvent.Name.trim(),
       eventDate: this.newEvent.EventDate,
-      location: this.newEvent.Location.trim()
+      location: this.newEvent.Location.trim(),
+      managerIds: this.newEvent.ManagerIds
     }).subscribe({
       complete: () => {
         this.showCreateEventDialog = false;
@@ -139,6 +149,7 @@ export class ClubComponent implements OnInit {
           Name: '',
           EventDate: '',
           Location: '',
+          ManagerIds: []
         };
       }
     });
@@ -173,5 +184,33 @@ export class ClubComponent implements OnInit {
     })
   }
 
+  openEditClubDialog() {
+    if (!this.club) return;
 
+    this.editClubData = {
+      ClubName: this.club.ClubName,
+      Description: this.club.Description
+    };
+
+    this.showEditClubDialog = true;
+  }
+
+  resetEditClubForm() {
+    this.editClubData = { ClubName: '', Description: '' };
+    this.showEditClubDialog = false;
+  }
+
+  submitClubEdit() {
+    if (!this.club) return;
+
+    this.clubApiService.updateClub(this.club.ClubId, {
+      ClubName: this.editClubData.ClubName.trim(),
+      Description: this.editClubData.Description.trim()
+    }).subscribe({
+      complete: () => {
+        this.loadClubInformation();
+        this.resetEditClubForm();
+      }
+    });
+  }
 }

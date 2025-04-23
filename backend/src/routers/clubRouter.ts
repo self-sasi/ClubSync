@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createClub, getAllClubs, getClub, getClubEvents, getClubMembers, getUserClubs, joinClub, leaveClub, makeClubAdmin, removeMemberFromClub } from '../controllers/clubController.js';
+import { createClub, getAllClubs, getClub, getClubEvents, getClubMembers, getUserClubs, joinClub, leaveClub, makeClubAdmin, removeMemberFromClub, updateClubHandler } from '../controllers/clubController.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const clubRouter = Router();
@@ -14,5 +14,6 @@ clubRouter.delete('/leave/:clubId', authenticateToken, leaveClub);
 clubRouter.post('/create', authenticateToken, createClub);
 clubRouter.delete('/member/:memberId/:clubId', authenticateToken, removeMemberFromClub);
 clubRouter.put('/promote/:memberId/:clubId', authenticateToken, makeClubAdmin);
+clubRouter.put('/:clubId', authenticateToken, updateClubHandler);
 
 export default clubRouter;

@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { UserResponse } from '../models/user.response';
 import { AuthService } from './auth.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import { AuthService } from './auth.service';
 export class AuthApiService {
 
   private _authService : AuthService = inject(AuthService);
+  private _toastService : ToastService = inject(ToastService);
 
   private _user : BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
   user$ : Observable<User | undefined> = this._user.asObservable();
@@ -66,5 +68,27 @@ export class AuthApiService {
         }
     ));
   }
+
+  changePassword(payload: { old: string; new: string }): Observable<any> {
+    return this.http.put<any>('http://localhost:3000/api/auth/password', payload).pipe(
+      tap({
+        next: () => {
+          this._toastService.showToast(
+            'success',
+            'Password Changed',
+            'Your password was updated successfully.'
+          );
+        },
+        error: (err) => {
+          this._toastService.showToast(
+            'error',
+            'Password Change Failed',
+            err.error?.error || err.message || 'Something went wrong while changing the password.'
+          );
+        }
+      })
+    );
+  }
+
 
 }
